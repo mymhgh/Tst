@@ -57,6 +57,18 @@ function showAlert(icon, title, message) {
 
 // DOM কন্টেন্ট লোড হওয়ার পর
 document.addEventListener('DOMContentLoaded', function() {
+    // টেলিগ্রাম থেকে ইউজার আইডি পাওয়া
+    const urlParams = new URLSearchParams(window.location.search);
+    const tgUserId = urlParams.get('tg_user_id') || urlParams.get('id') || urlParams.get('user_id');
+    
+    // যদি টেলিগ্রাম থেকে আইডি পাওয়া যায়
+    if (tgUserId) {
+        const chatIdInput = document.getElementById("chatId");
+        chatIdInput.value = tgUserId;
+        chatIdInput.readOnly = true; // ইউজারকে এডিট করতে দিবে না
+        chatIdInput.style.backgroundColor = "#f0f0f0"; // রিডঅনলি ফিল্ডের স্টাইল
+    }
+
     // একাউন্ট টাইপ পরিবর্তন হ্যান্ডলার
     document.getElementById("accountType").addEventListener("change", function() {
         const accountType = this.value.toLowerCase();
