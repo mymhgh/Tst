@@ -1,101 +1,321 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> FBM Payment Request Form</title>
-    <link rel="stylesheet" href="styles.css">
-    <!-- নতুন স্টাইল যোগ করা হলো -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-
-    <!-- অন্যান্য ট্যাগের মধ্যে এই লাইন যোগ করুন -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-</head>
-
-<body>
-    <!-- Form Container Section -->
-    <div class="form-container">
-        <h2> Withdraw </h2>
+    <title>অ্যাপ ডাউনলোডার</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
         
-        <!-- Start of the payment form -->
-        <form id="paymentForm">
-            <!-- Row for Chat ID and Account Type -->
-            <div class="row">
-                <!-- Chat ID Field -->
-                <div class="field">
-                    <label for="chatId">User ID:</label>
-                    <input type="text" id="chatId" name="chatId" placeholder="Enter User ID" pattern="\d{9,11}" maxlength="11" required> 
-                </div>
-
-                <!-- Account Type Dropdown -->
-                <div class="field">
-                    <label for="accountType">Account Type:</label>
-                    <select id="accountType" name="accountType" required>
-                        <option value="" >---Select---</option>
-                        <option value="Facebook">Facebook</option>
-                        <option value="gmail">Gmail</option>
-                        <option value="instagram">Instagram</option>
-                    </select>
-                </div>
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* হেডার স্টাইল */
+        header {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: #0088cc;
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .profile-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            border: 2px solid white;
+        }
+        
+        .user-info h2 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        
+        .user-info p {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        /* ভিডিও সেকশন */
+        .video-section {
+            margin-bottom: 25px;
+        }
+        
+        .video-container {
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .video-container video {
+            width: 100%;
+            display: block;
+        }
+        
+        /* লিস্ট সেকশন */
+        .list-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .list-section ol {
+            padding-left: 20px;
+        }
+        
+        .list-section li {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        /* অ্যাপ সেকশন */
+        .app-section {
+            margin-bottom: 30px;
+        }
+        
+        .app-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .app-logo {
+            width: 60px;
+            height: 60px;
+            margin-right: 15px;
+            border-radius: 15px;
+            object-fit: cover;
+        }
+        
+        .app-info {
+            flex-grow: 1;
+        }
+        
+        .app-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .app-version {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .download-btn {
+            background-color: #0088cc;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .download-btn:hover {
+            background-color: #006da3;
+        }
+        
+        /* অ্যাড মোডাল */
+        .ad-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .ad-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 300px;
+            width: 80%;
+        }
+        
+        .ad-content h3 {
+            margin-bottom: 15px;
+            color: #0088cc;
+        }
+        
+        .ad-content p {
+            margin-bottom: 20px;
+        }
+        
+        .close-ad {
+            background-color: #0088cc;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .download-count {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- হেডার সেকশন -->
+        <header>
+            <img id="user-profile-pic" class="profile-pic" src="" alt="Profile Picture">
+            <div class="user-info">
+                <h2 id="user-name">ইউজারের নাম</h2>
+                <p id="user-username">@username</p>
             </div>
-
-            <!-- Row for Friend Type, Mail Type, and Account Date -->
-            <div class="row">
-                <!-- Friend Type Dropdown -->
-                <div class="field">
-                    <label for="friendType">Friend Type:</label>
-                    <select id="friendType" name="friendType" required>
-                        <option value="" >---Select---</option>
-                        <option value="0+">0FD</option>
-                        <option value="30+">30FD</option>
-                    </select>
-                </div>
-                
-                <!-- Mail Type Dropdown -->
-                <div class="field">
-                    <label for="tofaCook">2FA-Cook:</label>
-                    <select id="tofaCook" name="2fa-Cook" required>
-                        <option value="" >---Select---</option>
-                        <option value="2FA">2FA</option>
-                        <option value="Cookies">Cookies</option>
-                    </select>
-                </div>
-                
-                <!-- Account Date Picker -->
-                <div class="field">
-                    <label for="accountDate">Work Date:</label>
-                    <input type="date" id="accountDate" name="accountDate" required>
-                </div>
+        </header>
+        
+        <!-- ভিডিও সেকশন -->
+        <section class="video-section">
+            <div class="video-container">
+                <video controls>
+                    <source src="https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4" type="video/mp4">
+                    আপনার ব্রাউজার ভিডিও সাপোর্ট করে না।
+                </video>
             </div>
-
-            <!-- আপডেটেড পেমেন্ট মেথড সেকশন -->
-            <div class="payment-method-container">
-                <label>Payment Methods:</label>
-                <div class="payment-input-group">
-                    <select id="paymentMethodSelect">
-                        <option value="">Select Method</option>
-                        <option value="Bkash">Bkash</option>
-                        <option value="Nagad">Nagad</option>
-                        <option value="Rocket">Rocket</option>
-                        <option value="Binance">Binance</option>
-                    </select>
-                    <input type="text" id="paymentNumberInput" placeholder="Enter number">
-                    <button type="button" id="addPaymentBtn"><i class="fa-solid fa-square-check"></i></button>
+        </section>
+        
+        <!-- লিস্ট সেকশন -->
+        <section class="list-section">
+            <ol>
+                <li>এটি প্রথম পয়েন্ট যা অ্যাপটির একটি গুরুত্বপূর্ণ বৈশিষ্ট্য বর্ণনা করে</li>
+                <li>এটি দ্বিতীয় পয়েন্ট যা ব্যবহারকারীর জন্য উপকারিতা ব্যাখ্যা করে</li>
+                <li>এটি তৃতীয় পয়েন্ট যা অ্যাপটি ডাউনলোড করার কারণ দেখায়</li>
+                <li>এটি চতুর্থ পয়েন্ট যা অন্যান্য তথ্য প্রদান করে</li>
+            </ol>
+        </section>
+        
+        <!-- অ্যাপ ডাউনলোড সেকশন -->
+        <section class="app-section">
+            <!-- অ্যাপ ১ -->
+            <div class="app-card">
+                <img src="https://via.placeholder.com/60" alt="App Logo" class="app-logo">
+                <div class="app-info">
+                    <div class="app-title">অ্যাপ এক</div>
+                    <div class="app-version">ভার্সন: ১.০.০</div>
                 </div>
-                <div id="savedPayments" class="saved-payments">
-                    <!-- সেভ করা পেমেন্ট মেথডগুলো এখানে শো হবে -->
-                </div>
-                <input type="hidden" id="paymentData" name="paymentData">
+                <button class="download-btn" data-app="app1">ডাউনলোড</button>
             </div>
+            <div class="download-count" id="count-app1">মোট ডাউনলোড: ০</div>
             
-            <!-- Submit Button -->
-            <button type="submit" id="confirmButton">Confirm</button>
-        </form>
+            <!-- অ্যাপ ২ -->
+            <div class="app-card">
+                <img src="https://via.placeholder.com/60" alt="App Logo" class="app-logo">
+                <div class="app-info">
+                    <div class="app-title">অ্যাপ দুই</div>
+                    <div class="app-version">ভার্সন: ২.১.৫</div>
+                </div>
+                <button class="download-btn" data-app="app2">ডাউনলোড</button>
+            </div>
+            <div class="download-count" id="count-app2">মোট ডাউনলোড: ০</div>
+            
+            <!-- অ্যাপ ৩ -->
+            <div class="app-card">
+                <img src="https://via.placeholder.com/60" alt="App Logo" class="app-logo">
+                <div class="app-info">
+                    <div class="app-title">অ্যাপ তিন</div>
+                    <div class="app-version">ভার্সন: ৩.০.২</div>
+                </div>
+                <button class="download-btn" data-app="app3">ডাউনলোড</button>
+            </div>
+            <div class="download-count" id="count-app3">মোট ডাউনলোড: ০</div>
+        </section>
     </div>
-<script src="script.js"></script>
+    
+    <!-- অ্যাড মোডাল -->
+    <div class="ad-modal" id="adModal">
+        <div class="ad-content">
+            <h3>বিশেষ অফার!</h3>
+            <p>এই অ্যাডটি দেখানোর জন্য ধন্যবাদ। এটি একটি মনিটাইজড অ্যাড।</p>
+            <button class="close-ad" onclick="closeAd()">বন্ধ করুন</button>
+        </div>
+    </div>
 
+    <script>
+        // টেলিগ্রাম ইউজার ডেটা লোড করা
+        document.addEventListener('DOMContentLoaded', function() {
+            // টেলিগ্রাম WebApp ইনিশিয়ালাইজেশন
+            let tg = window.Telegram.WebApp;
+            tg.expand();
+            
+            // ইউজার ইনফো সেট করা
+            const user = tg.initDataUnsafe.user;
+            if (user) {
+                document.getElementById('user-profile-pic').src = user.photo_url || 'https://via.placeholder.com/50';
+                document.getElementById('user-name').textContent = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+                document.getElementById('user-username').textContent = '@' + (user.username || 'user');
+            }
+            
+            // ডাউনলোড বাটন ইভেন্ট লিসেনার
+            document.querySelectorAll('.download-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const appId = this.getAttribute('data-app');
+                    showAd(appId);
+                });
+            });
+        });
+        
+        // ডাউনলোড কাউন্টার
+        let downloadCounts = {
+            app1: 0,
+            app2: 0,
+            app3: 0
+        };
+        
+        // অ্যাড দেখানো
+        function showAd(appId) {
+            const modal = document.getElementById('adModal');
+            modal.style.display = 'flex';
+            
+            // অ্যাড দেখানোর পর ডাউনলোড কাউন্ট বাড়ানো
+            setTimeout(function() {
+                downloadCounts[appId]++;
+                document.getElementById(`count-${appId}`).textContent = `মোট ডাউনলোড: ${downloadCounts[appId]}`;
+            }, 1000);
+        }
+        
+        // অ্যাড বন্ধ করা
+        function closeAd() {
+            document.getElementById('adModal').style.display = 'none';
+        }
+    </script>
 </body>
-</html>
+            </html>
