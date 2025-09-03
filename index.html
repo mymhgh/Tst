@@ -51,19 +51,19 @@
     .app {
       max-width: 980px;
       margin: 0 auto;
-      padding: 12px 14px 80px; /* উপরে এবং নিচে padding কমিয়েছি */
+      padding: 10px 14px 100px; /* হেডার ফাঁকা জায়গা কমিয়ে আনা হয়েছে */
     }
 
     /* Section spacing */
     .section {
-      margin-bottom: 20px; /* কমিয়েছি */
+      margin-bottom: 24px;
     }
 
     /* Header */
     .topbar {
       position: sticky; top: 0; z-index: 50;
       background: linear-gradient(180deg, var(--bg) 70%, transparent);
-      padding: 4px 0 8px; /* কমিয়েছি */
+      padding: 4px 0 8px; /* হেডার ফাঁকা জায়গা কমিয়ে আনা হয়েছে */
       display: flex; align-items: center; gap: 10px; justify-content: space-between;
     }
     .brand { display: flex; align-items: center; gap: 10px; }
@@ -77,13 +77,13 @@
 
     /* Buttons */
     .btn {
-      --h: 38px; --px: 12px; --rad: 10px; /* কমিয়েছি */
+      --h: 42px; --px: 14px; --rad: 12px;
       height: var(--h); padding: 0 var(--px);
       border-radius: var(--rad);
       border: 1px solid var(--border);
       background: var(--bg-soft);
       color: var(--text);
-      display: inline-flex; align-items: center; gap: 8px; justify-content: center;
+      display: inline-flex; align-items: center; gap: 10px; justify-content: center;
       font-weight: 600; cursor: pointer; user-select: none;
       transition: transform .08s ease, background .2s ease, border-color .2s ease;
       box-shadow: var(--shadow);
@@ -92,14 +92,14 @@
     .btn:active { transform: translateY(0); }
     .btn.primary { background: var(--primary); color: #fff; border-color: transparent; }
     .btn.ghost   { background: transparent; }
-    .btn.small   { --h: 32px; --px: 10px; --rad: 8px; font-size: 13px; } /* কমিয়েছি */
+    .btn.small   { --h: 34px; --px: 10px; --rad: 10px; font-size: 13px; }
     .btn.icon { --px: 8px; }
 
-    .theme-switch { display: inline-flex; align-items: center; gap: 6px; } /* কমিয়েছি */
+    .theme-switch { display: inline-flex; align-items: center; gap: 8px; }
 
     /* Layout */
     .grid {
-      display: grid; gap: 14px; /* কমিয়েছি */
+      display: grid; gap: 16px;
       grid-template-columns: 1.4fr 1fr;
     }
     @media (max-width: 860px) {
@@ -109,19 +109,19 @@
     .card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 16px; /* কমিয়েছি */
+      border-radius: 18px;
       box-shadow: var(--shadow);
-      padding: 14px; /* কমিয়েছি */
+      padding: 16px;
     }
-    .card h3 { margin: 0 0 10px; font-size: 16px; } /* কমিয়েছি */
+    .card h3 { margin: 0 0 12px; font-size: 16px; }
     .muted { color: var(--text-dim); font-size: 13px; }
 
     /* Profile */
     .profile {
-      display: grid; grid-template-columns: 84px 1fr; gap: 14px; align-items: center; /* কমিয়েছি */
+      display: grid; grid-template-columns: 92px 1fr; gap: 16px; align-items: center;
     }
     .avatar {
-      width: 84px; height: 84px; border-radius: 20px; overflow: hidden; border: 1px solid var(--border); /* কমিয়েছি */
+      width: 92px; height: 92px; border-radius: 22px; overflow: hidden; border: 1px solid var(--border);
       background: #0a0a0a; display: grid; place-items: center; font-weight: 800; color: #7b8aa2;
     }
     .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -129,9 +129,9 @@
     .kv { 
       display: grid; 
       grid-template-columns: 1fr auto; 
-      gap: 6px; /* কমিয়েছি */
+      gap: 8px; 
       align-items: center; 
-      padding: 6px 0; /* কমিয়েছি */
+      padding: 8px 0; 
     }
     .kv .k { color: var(--text-dim); font-size: 13px; }
     .kbd { 
@@ -140,39 +140,30 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 180px; /* কমিয়েছি */
-    }
-
-    /* নামের জন্য overflow হাইড */
-    .user-name {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
       max-width: 200px;
-      display: block;
     }
 
     /* Stat cards */
-    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; } /* কমিয়েছি */
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
     @media (max-width: 680px){ .stats { grid-template-columns: repeat(2, 1fr);} }
-    .stat { padding: 12px; border-radius: 14px; border: 1px solid var(--border); background: linear-gradient(180deg, var(--bg-soft), transparent); } /* কমিয়েছি */
+    .stat { padding: 14px; border-radius: 16px; border: 1px solid var(--border); background: linear-gradient(180deg, var(--bg-soft), transparent); }
     .stat .label { color: var(--text-dim); font-size: 12px; }
-    .stat .value { font-weight: 800; font-size: 18px; margin-top: 4px; } /* কমিয়েছি */
+    .stat .value { font-weight: 800; font-size: 20px; margin-top: 6px; }
 
     /* Table */
     .table { width: 100%; border-collapse: collapse; }
-    .table th, .table td { text-align: left; padding: 8px 6px; border-bottom: 1px dashed var(--border); } /* কমিয়েছি */
+    .table th, .table td { text-align: left; padding: 10px 8px; border-bottom: 1px dashed var(--border); }
     .table th { color: var(--text-dim); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .6px; }
-    .badge { display: inline-block; padding: 3px 6px; border-radius: 999px; border: 1px solid var(--border); font-size: 11px; } /* কমিয়েছি */
+    .badge { display: inline-block; padding: 4px 8px; border-radius: 999px; border: 1px solid var(--border); font-size: 12px; }
     .badge.success { background: rgba(46, 204, 113, 0.15); color: #2ecc71; border-color: rgba(46, 204, 113, 0.3); }
     .badge.pending { background: rgba(243, 156, 18, 0.15); color: #f39c12; border-color: rgba(243, 156, 18, 0.3); }
     .badge.rejected { background: rgba(231, 76, 60, 0.15); color: #e74c3c; border-color: rgba(231, 76, 60, 0.3); }
 
     /* Toast */
     .toast {
-      position: fixed; left: 50%; bottom: 14px; transform: translateX(-50%) translateY(20px); /* কমিয়েছি */
+      position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%) translateY(20px);
       background: var(--bg-soft); color: var(--text);
-      border: 1px solid var(--border); border-radius: 10px; padding: 8px 12px; box-shadow: var(--shadow); /* কমিয়েছি */
+      border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; box-shadow: var(--shadow);
       opacity: 0; pointer-events: none; transition: .25s ease;
       z-index: 100;
     }
@@ -182,12 +173,21 @@
     .demo {
       background: var(--primary-weak);
       color: var(--primary);
-      padding: 8px 12px; /* কমিয়েছি */
-      border-radius: 10px; /* কমিয়েছি */
-      margin-bottom: 14px; /* কমিয়েছি */
-      font-size: 13px; /* কমিয়েছি */
+      padding: 10px 14px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      font-size: 14px;
       border: 1px solid var(--border);
     }
+
+    /* টেক্সট ওভারফ্লো ফিক্স - নাম, ইউজারনেম ইত্যাদির জন্য */
+    .text-truncate {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 180px;
+    }
+    
   </style>
 </head>
 <body>
@@ -214,27 +214,27 @@
             <div class="kv">
               <div class="k" data-i18n="name">Name:</div>
               <div class="copy">
-                <span id="fullName" class="user-name skeleton" style="min-width:160px; height:16px; border-radius:6px;"></span>
+                <span id="fullName" class="kbd text-truncate skeleton" style="min-width:160px; height:16px; border-radius:6px;"></span>
               </div>
             </div>
             <div class="kv">
               <div class="k" data-i18n="username">TgUN:</div>
               <div class="copy">
-                <span id="username" class="kbd skeleton" style="min-width:140px; height:16px; border-radius:6px;"></span>
+                <span id="username" class="kbd text-truncate skeleton" style="min-width:140px; height:16px; border-radius:6px;"></span>
                 <button class="btn icon small" data-copy="username" title="Copy"> <i class="fa-solid fa-copy"></i> </button>
               </div>
             </div>
             <div class="kv">
               <div class="k" data-i18n="userid">UID:</div>
               <div class="copy">
-                <span id="chatId" class="kbd skeleton" style="min-width:140px; height:16px; border-radius:6px;"></span>
+                <span id="chatId" class="kbd text-truncate skeleton" style="min-width:140px; height:16px; border-radius:6px;"></span>
                 <button class="btn icon small" data-copy="chatId" title="Copy"> <i class="fa-solid fa-copy"> </i></button>
               </div>
             </div>
             <div class="kv">
               <div class="k" data-i18n="joindate">Date:</div>
               <div class="copy">
-                <span id="joinDate" class="kbd skeleton" style="min-width:120px; height:16px; border-radius:6px;"></span>
+                <span id="joinDate" class="kbd text-truncate skeleton" style="min-width:120px; height:16px; border-radius:6px;"></span>
               </div>
             </div>
           </div>
@@ -369,6 +369,11 @@
       document.getElementById('languageText').textContent = lang === 'bn' ? 'English' : 'বাংলা';
       document.getElementById('languageToggle').setAttribute('title', lang === 'bn' ? 'Change to English' : 'বাংলায় পরিবর্তন করুন');
       localStorage.setItem(LANG_KEY, lang);
+      
+      // Firebase-এ ভাষা প্রেফারেন্স আপডেট করুন (যদি ইউজার লগ ইন করা থাকে)
+      if (window.currentUserRef) {
+        updateUserPreference({ language: lang });
+      }
     }
     
     // Apply theme
@@ -376,13 +381,18 @@
       const themeIcon = document.querySelector('#themeToggle i');
       if (t === 'light') {
         root.classList.add('light');
-        if (themeIcon) themeIcon.className = 'fa-solid fa-sun';
+        themeIcon.className = 'fa-solid fa-sun';
       } else {
         root.classList.remove('light');
-        if (themeIcon) themeIcon.className = 'fa-solid fa-moon';
+        themeIcon.className = 'fa-solid fa-moon';
       }
       localStorage.setItem(THEME_KEY, t);
       try { if (window.Telegram?.WebApp?.setHeaderColor) window.Telegram.WebApp.setHeaderColor(t === 'light' ? '#ffffff' : '#0b0f14'); } catch {}
+      
+      // Firebase-এ থিম প্রেফারেন্স আপডেট করুন (যদি ইউজার লগ ইন করা থাকে)
+      if (window.currentUserRef) {
+        updateUserPreference({ theme: t });
+      }
     }
     
     // Initialize theme and language
@@ -393,15 +403,13 @@
     
     // Theme toggle
     document.getElementById('themeToggle').addEventListener('click', ()=>{
-      const newTheme = root.classList.contains('light') ? 'dark' : 'light';
-      applyTheme(newTheme);
+      applyTheme(root.classList.contains('light') ? 'dark' : 'light');
     });
     
     // Language toggle
     document.getElementById('languageToggle').addEventListener('click', ()=>{
       const currentLang = localStorage.getItem(LANG_KEY) || 'bn';
-      const newLang = currentLang === 'bn' ? 'en' : 'bn';
-      applyLanguage(newLang);
+      applyLanguage(currentLang === 'bn' ? 'en' : 'bn');
     });
 
     // ------------------------------
@@ -451,9 +459,9 @@
       // Mock (for local dev)
       const mock = {
         id: 999999999,
-        first_name: 'Your Very Long Name That Should Be Truncated',
-        last_name: 'Last Name Also Very Long',
-        username: 'verylongusername123456789' ,
+        first_name: 'Your',
+        last_name: 'Name',
+        username: '' ,
         language_code: 'bn',
         is_premium: true,
         photo_url: ''
@@ -537,6 +545,7 @@
        ========================= -->
   <script type="module">
     // ===== IMPORTANT: Add your Firebase project config here =====
+    // 🔧 Replace the placeholders with your real values from Firebase Console
     const firebaseConfig = {
       apiKey: "AIzaSyCs6ePkTxvMjcERh6yAdvjPqxIu6X7jhRM",
       authDomain: "fbm-market-bot.firebaseapp.com",
@@ -549,7 +558,7 @@
 
     // ===== Imports =====
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
-    import { getFirestore, doc, getDoc, setDoc, serverTimestamp, collection, query, orderBy, limit, getDocs, onSnapshot } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
+    import { getFirestore, doc, getDoc, setDoc, serverTimestamp, collection, query, orderBy, limit, getDocs, onSnapshot, updateDoc } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
 
     // ===== App Init =====
     const app = initializeApp(firebaseConfig);
@@ -563,6 +572,20 @@
     // ===== Step 1: First render Telegram user data =====
     renderProfile(user, Date.now());
 
+    // ===== Firebase-এ ইউজার প্রেফারেন্স আপডেট করার ফাংশন =====
+    async function updateUserPreference(prefs) {
+      try {
+        if (!window.currentUserRef) return;
+        
+        await updateDoc(window.currentUserRef, {
+          ...prefs,
+          updatedAt: serverTimestamp()
+        });
+      } catch (error) {
+        console.error('প্রেফারেন্স আপডেট করতে সমস্যা:', error);
+      }
+    }
+
     // ===== Step 2: Then load user data from Firebase using chat ID =====
     async function loadUserDataFromFirebase(){
       if (!user || !user.id) {
@@ -574,13 +597,15 @@
       
       const uid = String(user.id);
       const uRef = doc(db, 'users', uid);
+      window.currentUserRef = uRef; // গ্লোবাল রেফারেন্স সংরক্ষণ
+      
       const snap = await getDoc(uRef);
 
-      let joinedAt = null;
+      let joinedAt = Date.now();
+      let initialJoinDate = null;
 
       if (!snap.exists()) {
         // Create new user with defaults
-        joinedAt = Date.now();
         const payload = {
           id: uid,
           first_name: user.first_name || '',
@@ -595,7 +620,12 @@
           totalEarning: 0,
           joinDate: serverTimestamp(),
           createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp()
+          updatedAt: serverTimestamp(),
+          // প্রেফারেন্স সংরক্ষণ
+          preferences: {
+            theme: localStorage.getItem(THEME_KEY) || 'dark',
+            language: localStorage.getItem(LANG_KEY) || 'bn'
+          }
         };
         await setDoc(uRef, payload);
         
@@ -608,13 +638,38 @@
           totalEarning: 0,
         });
         
-        // Save join date to localStorage for future reference
-        localStorage.setItem(`user_${uid}_joinDate`, joinedAt.toString());
+        initialJoinDate = joinedAt;
       } else {
         const data = snap.data();
-        // Get join date from Firebase or localStorage
-        joinedAt = (data.joinDate?.toDate?.() ? data.joinDate.toDate().getTime() : 
-                   (data.joinDate || localStorage.getItem(`user_${uid}_joinDate`) || Date.now()));
+        initialJoinDate = (data.joinDate?.toDate?.() ? data.joinDate.toDate().getTime() : (data.joinDate || Date.now()));
+        joinedAt = initialJoinDate; // প্রথম যোগদানের তারিখ সংরক্ষণ
+        
+        // Firebase থেকে প্রেফারেন্স লোড করুন
+        if (data.preferences) {
+          if (data.preferences.theme) {
+            applyTheme(data.preferences.theme);
+          }
+          if (data.preferences.language) {
+            applyLanguage(data.preferences.language);
+          }
+        }
+        
+        // টেলিগ্রামে প্রোফাইল আপডেট হলে Firebase-এ সিঙ্ক করুন
+        const needsUpdate = 
+          (data.first_name !== user.first_name) ||
+          (data.last_name !== user.last_name) ||
+          (data.username !== user.username) ||
+          (data.photo_url !== user.photo_url);
+        
+        if (needsUpdate) {
+          await updateDoc(uRef, {
+            first_name: user.first_name || '',
+            last_name: user.last_name || '',
+            username: user.username || '',
+            photo_url: user.photo_url || '',
+            updatedAt: serverTimestamp()
+          });
+        }
         
         // Update profile with data from Firebase
         renderProfile({
@@ -623,7 +678,7 @@
           last_name: data.last_name || user.last_name,
           username: data.username || user.username,
           photo_url: data.photo_url || user.photo_url
-        }, joinedAt);
+        }, initialJoinDate); // প্রথম যোগদানের তারিখ ব্যবহার
         
         // Render stats from Firebase
         renderStats({
@@ -659,6 +714,15 @@
               totalWithdraw: data.totalWithdraw || 0,
               totalEarning: data.totalEarning || 0,
             });
+            
+            // প্রোফাইল তথ্য আপডেট হলে UI-তে প্রতিফলিত করুন
+            renderProfile({
+              id: data.id || user.id,
+              first_name: data.first_name || user.first_name,
+              last_name: data.last_name || user.last_name,
+              username: data.username || user.username,
+              photo_url: data.photo_url || user.photo_url
+            }, initialJoinDate); // প্রথম যোগদানের তারিখ অপরিবর্তিত রাখুন
           }
         });
 
