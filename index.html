@@ -51,7 +51,7 @@
     .app {
       max-width: 980px;
       margin: 0 auto;
-      padding: 10px 14px 100px; /* হেডার ফাঁকা জায়গা কমিয়ে আনা হয়েছে */
+      padding: 10px 14px 100px;
     }
 
     /* Section spacing */
@@ -63,7 +63,7 @@
     .topbar {
       position: sticky; top: 0; z-index: 50;
       background: linear-gradient(180deg, var(--bg) 70%, transparent);
-      padding: 4px 0 8px; /* হেডার ফাঁকা জায়গা কমিয়ে আনা হয়েছে */
+      padding: 4px 0 8px;
       display: flex; align-items: center; gap: 10px; justify-content: space-between;
     }
     .brand { display: flex; align-items: center; gap: 10px; }
@@ -562,7 +562,6 @@
     // Telegram user (real or mock for local testing)
     // ------------------------------
     function getTelegramUser(){
-      // Telegram WebApp initialization with safety check
       if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
         try {
           Telegram.WebApp.ready();
@@ -664,11 +663,9 @@
   
   <!-- =========================
        FIREBASE (v9 Modular via CDN)
-       Fill your config below
        ========================= -->
   <script type="module">
-    // ===== IMPORTANT: Add your Firebase project config here =====
-    // 🔧 Replace the placeholders with your real values from Firebase Console
+    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyCs6ePkTxvMjcERh6yAdvjPqxIu6X7jhRM",
       authDomain: "fbm-market-bot.firebaseapp.com",
@@ -679,25 +676,32 @@
       databaseURL: "https://fbm-market-bot-default-rtdb.asia-southeast1.firebasedatabase.app"
     };
 
-    // ===== Imports =====
+    // Imports
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
-    import { getFirestore, doc, getDoc, setDoc, serverTimestamp, collection, query, orderBy, limit, getDocs, onSnapshot, updateDoc } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
-    import { getDatabase, ref, onValue, set, get, child } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js';
+    import { getFirestore, doc, getDoc, setDoc, serverTimestamp, onSnapshot } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
+    import { getDatabase, ref, query, orderByChild, equalTo, onValue, get } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js';
 
-    // ===== App Init =====
+    // App Init
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const rtdb = getDatabase(app);
 
-    // ===== Telegram user (real or mock) =====
+    // Collection names from your structure
+    const COLLECTIONS = {
+      WITHDRAWALS: 'withdraw_requests',
+      EARNINGS: 'submissions',
+      USERS: 'users'
+    };
+
+    // Telegram user (real or mock)
     const { source, user } = getTelegramUser();
     const demoBanner = document.getElementById('demoBanner');
     if (source === 'mock') demoBanner.style.display = 'block';
 
-    // ===== Step 1: First render Telegram user data =====
+    // Step 1: First render Telegram user data
     renderProfile(user, Date.now());
 
-    // ===== Step 2: Load user data from Firebase =====
+    // Step 2: Load user data from Firebase
     async function loadUserDataFromFirebase(){
       if (!user || !user.id) {
         console.error('User data not available');
@@ -707,7 +711,7 @@
       }
       
       const uid = String(user.id);
-      const uRef = doc(db, 'users', uid);
+      const uRef = doc(db, COLLECTIONS.USERS, uid);
       
       const snap = await getDoc(uRef);
 
@@ -765,7 +769,7 @@
         // Load transaction history from Realtime Database
         loadTransactionHistory(uid);
 
-        // Set up real-time listeners for updates
+        // Set up real-time listeners for user updates
         onSnapshot(uRef, (doc) => {
           if (doc.exists()) {
             const data = doc.data();
@@ -775,15 +779,6 @@
               totalWithdraw: data.totalWithdraw || 0,
               totalEarning: data.totalEarning || 0,
             });
-            
-            // Update profile if needed
-            renderProfile({
-              id: data.id || user.id,
-              first_name: data.first_name || user.first_name,
-              last_name: data.last_name || user.last_name,
-              username: data.username || user.username,
-              photo_url: data.photo_url || user.photo_url
-            }, joinedAt);
           }
         });
       }
@@ -792,35 +787,147 @@
     // Load transaction history from Realtime Database
     async function loadTransactionHistory(uid) {
       try {
-        const transactionsRef = ref(rtdb, `transactions/${uid}`);
+        const currentLang = localStorage.getItem(LANG_KEY) || 'bn';
         
-        onValue(transactionsRef, (snapshot) => {
-          const transactionsData = snapshot.val();
-          const transactions = [];
-          
-          if (transactionsData) {
-            Object.keys(transactionsData).forEach(key => {
-              const transaction = transactionsData[key];
+        // Load withdrawal transactions
+        const withdrawalsRef = query(
+          ref(rtdb, COLLECTIONS.WITHDRAWALS),
+          orderByChild('chatId'),
+          equalTo(uid)
+        );
+        
+        // Load earning transactions  
+        const earningsRef = query(
+          ref(rtdb, COLLECTIONS.EARNINGS),
+          orderByChild('tgChatId'),
+          equalTo(uid)
+        );
+
+        const [withdrawalsSnapshot, earningsSnapshot] = await Promise.all([
+          get(withdrawalsRef),
+          get(earningsRef)
+        ]);
+
+        const transactions = [];
+
+        // Process withdrawals
+        if (withdrawalsSnapshot.exists()) {
+          withdrawalsSnapshot.forEach((childSnapshot) => {
+            const withdrawal = childSnapshot.val();
+            if (withdrawal.status === 'Approved' && withdrawal.processedAt) {
               transactions.push({
-                type: transaction.type,
-                amount: transaction.amount,
-                title: transaction.title,
-                trxId: transaction.trxId,
-                date: transaction.date,
-                status: transaction.status
+                type: 'minus',
+                amount: withdrawal.amount || 0,
+                title: translations[currentLang]['withdrawalTitle'],
+                trxId: childSnapshot.key, // Document ID as Trx ID
+                date: withdrawal.processedAt,
+                status: 'success'
               });
-            });
-            
-            // Sort by date (newest first)
-            transactions.sort((a, b) => b.date - a.date);
-          }
-          
-          renderTransactionHistory(transactions);
+            }
+          });
+        }
+
+        // Process earnings
+        if (earningsSnapshot.exists()) {
+          earningsSnapshot.forEach((childSnapshot) => {
+            const earning = childSnapshot.val();
+            if (earning.status === 'Approved' && earning.submissionTime) {
+              transactions.push({
+                type: 'add',
+                amount: earning.earning || 0,
+                title: translations[currentLang]['earningTitle'],
+                trxId: earning.timestamp || childSnapshot.key,
+                date: earning.submissionTime,
+                status: 'success'
+              });
+            }
+          });
+        }
+
+        // Sort by date (newest first)
+        transactions.sort((a, b) => b.date - a.date);
+        
+        renderTransactionHistory(transactions);
+
+        // Set up real-time listeners
+        onValue(withdrawalsRef, (snapshot) => {
+          updateTransactionHistory(uid, currentLang);
         });
+
+        onValue(earningsRef, (snapshot) => {
+          updateTransactionHistory(uid, currentLang);
+        });
+
       } catch (error) {
         console.error('Error loading transaction history:', error);
         const currentLang = localStorage.getItem(LANG_KEY) || 'bn';
         toast(translations[currentLang]['dataLoadError'] || 'ট্রানজেকশন হিস্টরি লোড করতে সমস্যা হয়েছে');
+      }
+    }
+
+    // Update transaction history when data changes
+    async function updateTransactionHistory(uid, currentLang) {
+      try {
+        const withdrawalsRef = query(
+          ref(rtdb, COLLECTIONS.WITHDRAWALS),
+          orderByChild('chatId'),
+          equalTo(uid)
+        );
+        
+        const earningsRef = query(
+          ref(rtdb, COLLECTIONS.EARNINGS),
+          orderByChild('tgChatId'),
+          equalTo(uid)
+        );
+
+        const [withdrawalsSnapshot, earningsSnapshot] = await Promise.all([
+          get(withdrawalsRef),
+          get(earningsRef)
+        ]);
+
+        const transactions = [];
+
+        // Process withdrawals
+        if (withdrawalsSnapshot.exists()) {
+          withdrawalsSnapshot.forEach((childSnapshot) => {
+            const withdrawal = childSnapshot.val();
+            if (withdrawal.status === 'Approved' && withdrawal.processedAt) {
+              transactions.push({
+                type: 'minus',
+                amount: withdrawal.amount || 0,
+                title: translations[currentLang]['withdrawalTitle'],
+                trxId: childSnapshot.key,
+                date: withdrawal.processedAt,
+                status: 'success'
+              });
+            }
+          });
+        }
+
+        // Process earnings
+        if (earningsSnapshot.exists()) {
+          earningsSnapshot.forEach((childSnapshot) => {
+            const earning = childSnapshot.val();
+            if (earning.status === 'Approved' && earning.submissionTime) {
+              transactions.push({
+                type: 'add',
+                amount: earning.earning || 0,
+                title: translations[currentLang]['earningTitle'],
+                trxId: earning.timestamp || childSnapshot.key,
+                date: earning.submissionTime,
+                status: 'success'
+              });
+            }
+          });
+        }
+
+        // Sort by date (newest first)
+        transactions.sort((a, b) => b.date - a.date);
+        
+        renderTransactionHistory(transactions);
+
+      } catch (error) {
+        console.error('Error updating transaction history:', error);
       }
     }
 
@@ -838,7 +945,7 @@
     });
   </script>
   
-  <!-- Telegram WebApp JS (optional, loaded by Telegram client automatically). Safe to include for local preview. -->
+  <!-- Telegram WebApp JS -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </body>
-                </html>
+</html>
