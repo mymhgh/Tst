@@ -20,219 +20,66 @@
     <!-- SweetAlert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
     <style>
-        /* ====== GLOBAL STYLES ====== */
+        /* আপনার মূল CSS স্টাইল অপরিবর্তিত রাখা হয়েছে */
         :root {
             --primary-color: #4361ee;
-            --primary-gradient: linear-gradient(135deg, #4361ee, #3a0ca3);
             --secondary-color: #3f37c9;
-            --accent-color: #4895ef;
-            --success-color: #4cc9f0;
-            --success-gradient: linear-gradient(135deg, #4cc9f0, #4895ef);
-            --error-color: #f72585;
-            --warning-color: #f77f00;
-            --info-color: #560bad;
-            --dark-color: #1a1a1a;
-            --light-color: #f8f9fa;
-            --border-radius: 16px;
-            --border-radius-lg: 24px;
-            --border-radius-sm: 12px;
-            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            --box-shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.25);
-            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        /* Light Mode Variables (Default) */
-        [data-theme="light"] {
-            --bg-color: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            --card-bg: rgba(255, 255, 255, 0.95);
-            --card-glass: rgba(255, 255, 255, 0.85);
-            --text-color: #2d3748;
-            --text-secondary: #4a5568;
-            --border-color: rgba(226, 232, 240, 0.8);
-            --input-bg: rgba(248, 250, 252, 0.9);
-            --history-bg: rgba(255, 255, 255, 0.8);
-            --balance-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --glass-effect: blur(20px);
+            --accent-color: #4361ee;
+            --success-color: #4bb543;
+            --error-color: #f44336;
+            --warning-color: #ff9800;
+            --info-color: #2196f3;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
         }
 
         /* Dark Mode Variables */
         [data-theme="dark"] {
-            --bg-color: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
-            --card-bg: rgba(45, 45, 45, 0.95);
-            --card-glass: rgba(45, 45, 45, 0.85);
-            --text-color: #e2e8f0;
-            --text-secondary: #a0aec0;
-            --border-color: rgba(74, 85, 104, 0.6);
-            --input-bg: rgba(26, 32, 44, 0.9);
-            --history-bg: rgba(45, 45, 45, 0.8);
-            --balance-bg: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --glass-effect: blur(25px);
+            --bg-color: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --text-color: #ffffff;
+            --light-color: #3d3d3d;
+            --border-color: #444;
+            --input-bg: #3a3a3a;
+            --history-bg: #2a2a2a;
+            --balance-bg: linear-gradient(135deg, #3f37c9, #4361ee);
+        }
+
+        /* Light Mode Variables */
+        [data-theme="light"] {
+            --bg-color: #c3cfe2;
+            --card-bg: #ffffff;
+            --text-color: #212529;
+            --light-color: #f8f9fa;
+            --border-color: #ddd;
+            --input-bg: #f8f9fa;
+            --history-bg: #f9f9f9;
+            --balance-bg: linear-gradient(135deg, #4361ee, #4cc9f0);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
 
         body {
+            font-family: 'Arial', sans-serif;
             background: var(--bg-color);
             color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
             padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: var(--transition-smooth);
-            line-height: 1.6;
+            transition: var(--transition);
         }
 
-        /* ====== ANIMATIONS ====== */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        @keyframes slideInRight {
-            from { transform: translateX(30px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-20px); }
-            60% { transform: translateY(-10px); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* ====== BLOCK OVERLAY ====== */
+        /* Block Overlay */
         .block-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            backdrop-filter: blur(30px);
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        .block-container {
-            background: var(--card-bg);
-            border-radius: var(--border-radius-lg);
-            padding: 40px;
-            text-align: center;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: var(--box-shadow-lg);
-            transform: translateY(0);
-            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .block-icon {
-            font-size: 80px;
-            color: var(--error-color);
-            margin-bottom: 25px;
-            animation: pulse 2s infinite;
-        }
-
-        .block-title {
-            font-size: 28px;
-            color: var(--error-color);
-            margin-bottom: 20px;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--error-color), #ff6b6b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .block-message {
-            margin-bottom: 30px;
-            font-size: 16px;
-            line-height: 1.7;
-            color: var(--text-secondary);
-        }
-
-        .block-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .block-btn {
-            padding: 16px 28px;
-            border-radius: var(--border-radius);
-            text-decoration: none;
-            color: white;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .block-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: var(--transition);
-        }
-
-        .block-btn:hover::before {
-            left: 100%;
-        }
-
-        .block-btn.telegram {
-            background: linear-gradient(135deg, #0088cc, #0055cc);
-        }
-
-        .block-btn.channel {
-            background: linear-gradient(135deg, #ff0000, #cc0000);
-        }
-
-        .block-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-
-        /* ====== PASSWORD MODAL ====== */
-        .password-modal {
             position: fixed;
             top: 0;
             left: 0;
@@ -243,215 +90,193 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            backdrop-filter: blur(30px);
-            animation: fadeIn 0.6s ease-out;
+            backdrop-filter: blur(10px);
+        }
+
+        .block-container {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: var(--box-shadow);
+        }
+
+        .block-icon {
+            font-size: 60px;
+            color: var(--error-color);
+            margin-bottom: 20px;
+        }
+
+        .block-title {
+            font-size: 24px;
+            color: var(--error-color);
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .block-message {
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .block-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .block-btn {
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .block-btn.telegram {
+            background: #0088cc;
+        }
+
+        .block-btn.channel {
+            background: #ff0000;
+        }
+
+        .block-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* Password Modal */
+        .password-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9998;
+            backdrop-filter: blur(5px);
         }
 
         .password-container {
             background: var(--card-bg);
-            border-radius: var(--border-radius-lg);
-            padding: 35px;
-            width: 95%;
-            max-width: 500px;
-            box-shadow: var(--box-shadow-lg);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: var(--box-shadow);
             position: relative;
-            transform: scale(1);
-            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .password-close-btn {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 15px;
+            right: 15px;
             background: var(--error-color);
             color: white;
             border: none;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 30px;
+            height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: var(--transition);
-            font-size: 18px;
-            z-index: 10;
         }
 
         .password-close-btn:hover {
-            transform: rotate(90deg) scale(1.1);
-            background: linear-gradient(135deg, var(--error-color), #ff6b6b);
+            transform: rotate(90deg);
         }
 
         .password-header {
             text-align: center;
-            margin-bottom: 30px;
-            padding-right: 40px;
+            margin-bottom: 20px;
+            padding-right: 20px;
         }
 
         .password-icon {
-            font-size: 60px;
+            font-size: 40px;
             color: var(--primary-color);
-            margin-bottom: 20px;
-            animation: bounce 2s infinite;
+            margin-bottom: 10px;
         }
 
         .password-title {
-            font-size: 28px;
-            margin-bottom: 12px;
-            font-weight: 700;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 20px;
+            margin-bottom: 5px;
+            color: var(--primary-color);
         }
 
         .password-subtitle {
-            color: var(--text-secondary);
-            font-size: 16px;
-            line-height: 1.6;
-            margin-bottom: 5px;
-        }
-
-        .password-note {
+            color: #666;
             font-size: 14px;
-            color: var(--accent-color);
-            font-style: italic;
-            margin-top: 10px;
         }
 
         .password-input-group {
-            margin-bottom: 25px;
+            margin-bottom: 15px;
         }
 
         .password-input-group label {
             display: block;
-            margin-bottom: 12px;
-            font-weight: 600;
-            font-size: 16px;
-            color: var(--text-color);
+            margin-bottom: 5px;
+            font-weight: 500;
         }
 
         .password-input-group input {
             width: 100%;
-            padding: 18px;
-            border: 2px solid var(--border-color);
+            padding: 12px;
+            border: 1px solid var(--border-color);
             border-radius: var(--border-radius);
             background: var(--input-bg);
             color: var(--text-color);
-            font-size: 18px;
-            text-align: center;
-            letter-spacing: 4px;
-            font-weight: 600;
-            transition: var(--transition);
         }
 
-        .password-input-group input:focus {
-            border-color: var(--primary-color);
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.15);
-            transform: translateY(-2px);
-        }
-
-        /* ====== PREMIUM PROGRESS BUTTON ====== */
-        .progress-btn-container {
-            position: relative;
-            margin-top: 25px;
-            border-radius: var(--border-radius-lg);
-            overflow: hidden;
-            box-shadow: var(--box-shadow);
-        }
-
-        .progress-btn {
+        .password-btn {
             width: 100%;
-            padding: 22px;
-            background: var(--primary-gradient);
+            padding: 12px;
+            background: var(--primary-color);
             color: white;
             border: none;
-            border-radius: var(--border-radius-lg);
-            font-weight: 600;
-            font-size: 18px;
+            border-radius: var(--border-radius);
+            font-weight: 500;
             cursor: pointer;
             transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
         }
 
-        .progress-btn:disabled {
-            background: linear-gradient(135deg, #718096, #4a5568);
-            cursor: not-allowed;
+        .password-btn:hover {
+            opacity: 0.9;
         }
 
-        .progress-btn-content {
-            position: relative;
-            z-index: 3;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .progress-btn-text {
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        .progress-btn-loader {
-            display: none;
-            width: 20px;
-            height: 20px;
-            border: 2px solid transparent;
-            border-top: 2px solid white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        .progress-bar-container {
+        /* Watermark Styles */
+        .watermark {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.2);
-            overflow: hidden;
+            opacity: 0.15;
+            font-size: 40px;
+            font-weight: bold;
+            color: var(--primary-color);
+            pointer-events: none;
+            z-index: 100;
+            transform: rotate(-45deg);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            white-space: nowrap;
         }
 
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #4cc9f0, #4895ef, #4361ee);
-            width: 0%;
-            transition: width 0.1s ease;
-            position: relative;
-        }
-
-        .progress-bar::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, 
-                transparent 0%, 
-                rgba(255, 255, 255, 0.4) 50%, 
-                transparent 100%);
-            animation: shimmer 2s infinite;
-        }
-
-        .progress-btn-complete .progress-btn-loader {
-            display: block;
-        }
-
-        .progress-btn-complete .progress-btn-text {
-            animation: pulse 0.5s ease-in-out;
-        }
-
-        /* ====== MAIN CONTAINER ====== */
+        /* Main Container */
         .main-container {
             width: 100%;
-            max-width: 580px;
+            max-width: 550px;
             position: relative;
         }
 
@@ -459,60 +284,50 @@
         .balance-section {
             background: var(--balance-bg);
             color: white;
-            border-radius: var(--border-radius-lg);
-            padding: 30px;
-            margin-bottom: 25px;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
             box-shadow: var(--box-shadow);
-            animation: slideUp 0.8s ease-out;
+            animation: slideDown 0.5s ease;
             position: relative;
-            overflow: hidden;
         }
 
-        .balance-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(255,255,255,0.1) 100%);
-            pointer-events: none;
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .balance-section h2 {
             text-align: center;
-            margin-bottom: 25px;
-            font-size: 26px;
-            font-weight: 700;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+            font-size: 22px;
+            font-weight: 600;
         }
 
         /* Theme Toggle */
         .theme-toggle {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 10px;
+            right: 10px;
             background: rgba(255, 255, 255, 0.2);
             border: none;
             border-radius: 50%;
-            width: 45px;
-            height: 45px;
+            width: 35px;
+            height: 35px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: var(--transition);
-            backdrop-filter: blur(10px);
-            z-index: 5;
         }
 
         .theme-toggle:hover {
-            transform: rotate(45deg) scale(1.1);
+            transform: rotate(30deg);
             background: rgba(255, 255, 255, 0.3);
         }
 
         .theme-toggle-btn {
-            font-size: 20px;
+            font-size: 18px;
             color: white;
         }
 
@@ -520,89 +335,71 @@
             display: flex;
             justify-content: space-around;
             background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(10px);
             border-radius: var(--border-radius);
-            padding: 20px;
-            position: relative;
+            padding: 15px;
         }
 
         .balance-item {
             text-align: center;
             flex: 1;
-            position: relative;
-            padding: 0 15px;
-        }
-
-        .balance-item::after {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            height: 60%;
-            width: 1px;
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .balance-item:last-child::after {
-            display: none;
         }
 
         .balance-item h3 {
-            font-size: 15px;
-            margin-bottom: 12px;
+            font-size: 14px;
+            margin-bottom: 8px;
             opacity: 0.9;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .balance-item p {
-            font-size: 24px;
-            font-weight: 700;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            font-size: 20px;
+            font-weight: bold;
         }
 
         /* Form Container */
         .form-container {
-            background: var(--card-bg);
-            border-radius: var(--border-radius-lg);
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
-            padding: 30px;
-            margin-bottom: 25px;
-            animation: slideInRight 0.8s ease-out;
+            padding: 20px;
+            margin-bottom: 20px;
+            animation: fadeIn 0.7s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .form-container h2 {
             color: var(--primary-color);
             text-align: center;
-            margin-bottom: 25px;
-            font-size: 26px;
-            font-weight: 700;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: 600;
         }
 
         /* Form Elements */
         #withdrawForm {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
         }
 
+        /* User ID & Username */
         .row {
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 10px;
         }
 
         .field {
             flex: 1;
-            min-width: calc(50% - 15px);
+            min-width: calc(50% - 10px);
         }
 
+        /* Amount Input with Max Button */
         .amount-group {
             position: relative;
             width: 100%;
@@ -610,92 +407,93 @@
 
         #maxBalanceBtn {
             position: absolute;
-            right: 10px;
+            right: 8px;
             top: 50%;
             transform: translateY(-50%);
             background: var(--accent-color);
             color: white;
             border: none;
-            border-radius: var(--border-radius-sm);
-            padding: 10px 16px;
-            font-size: 13px;
-            font-weight: 600;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: bold;
             cursor: pointer;
             transition: var(--transition);
         }
 
         #maxBalanceBtn:hover {
-            background: var(--primary-color);
+            background: #3aa8d1;
             transform: translateY(-50%) scale(1.05);
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
-            font-size: 15px;
-            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 14px;
+            font-weight: 500;
             color: var(--text-color);
         }
 
         input, select {
             width: 100%;
-            padding: 14px 16px;
-            border: 2px solid var(--border-color);
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
             border-radius: var(--border-radius);
-            font-size: 15px;
-            background: var(--input-bg);
+            font-size: 14px;
+            background-color: var(--input-bg);
             color: var(--text-color);
             transition: var(--transition);
         }
 
         input:focus, select:focus {
-            border-color: var(--primary-color);
+            border-color: var(--accent-color);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
-            transform: translateY(-1px);
+            box-shadow: 0 0 0 3px rgba(76, 201, 240, 0.3);
         }
 
         input:read-only {
-            background: var(--light-color);
-            color: var(--text-secondary);
+            background-color: var(--light-color);
+            color: #888;
             cursor: not-allowed;
         }
 
         /* Payment Methods Section */
         .payment-method-container {
-            margin-top: 15px;
+            margin-top: 10px;
         }
 
         .payment-input-group {
             display: flex;
             flex-direction: row;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 12px;
             width: 100%;
         }
 
         .payment-input-group select {
-            flex: 0 0 90px;
-            padding: 12px;
+            flex: 0 0 80px;
+            padding: 10px;
+            font-size: 14px;
         }
 
         .payment-input-group input {
             flex: 1;
-            padding: 12px 16px;
+            padding: 10px 12px;
+            font-size: 14px;
         }
 
         #addPaymentBtn {
-            flex: 0 0 45px;
-            width: 45px;
-            height: 45px;
+            flex: 0 0 40px;
+            width: 35px;
+            height: 35px;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-radius: 50%;
+            border-radius: 15%;
             font-size: 20px;
-            background: var(--primary-gradient);
+            background-color: var(--accent-color);
             color: white;
             border: none;
             cursor: pointer;
@@ -703,41 +501,375 @@
         }
 
         #addPaymentBtn:hover {
-            transform: rotate(180deg) scale(1.1);
-            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+            background-color: #2196f3;
+            transform: rotate(90deg);
         }
 
         .saved-payments {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 8px;
+            margin-top: 10px;
         }
 
         .saved-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 16px;
-            background: var(--light-color);
-            border-radius: var(--border-radius-sm);
-            transition: var(--transition);
+            padding: 5px 10px;
+            background-color: var(--light-color);
+            border-radius: 6px;
+            transition: all 0.3s ease;
             border: 1px solid var(--border-color);
-            animation: slideInRight 0.4s ease-out;
+            animation: popIn 0.3s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         .saved-item:hover {
-            background: var(--input-bg);
-            transform: translateY(-2px);
-            box-shadow: var(--box-shadow);
+            background-color: var(--input-bg);
+            transform: translateX(2px);
         }
 
         .saved-item span {
             font-size: 14px;
             color: var(--text-color);
+        }
+
+        /* Buttons */
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 12px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        #submitButton {
+            width: 100%;
+            margin-top: 5px;
+            background-color: var(--success-color);
+        }
+
+        #submitButton:disabled {
+            background-color: #888;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Withdraw History Section */
+        .history-section {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .history-section h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 22px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .search-container {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .search-container input {
+            padding-left: 40px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
+        .history-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            background: var(--history-bg);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .history-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--box-shadow);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .history-timestamp {
+            font-size: 12px;
+            color: #888;
+            background: var(--light-color);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-family: monospace;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .history-amount {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 18px;
+        }
+
+        .history-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .history-date {
+            color: #888;
+        }
+
+        .history-status {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
             font-weight: 500;
         }
 
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-approved {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .history-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .details-btn {
+            background: var(--info-color);
+            padding: 6px 12px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Details Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: var(--box-shadow);
+            animation: slideUp 0.3s ease;
+            position: relative;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .modal-header h3 {
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-btn {
+            background: var(--error-color);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-btn:hover {
+            transform: rotate(90deg);
+        }
+
+        .modal-details {
+            margin-bottom: 20px;
+        }
+
+        .user-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .user-info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-info-label {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        .user-info-value {
+            font-weight: 500;
+            word-break: break-word;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .detail-label {
+            font-weight: 500;
+            color: #888;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .detail-value {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .transaction-id-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--light-color);
+            padding: 10px;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+        }
+
+        .transaction-id {
+            font-family: monospace;
+            font-size: 14px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .copy-btn {
+            background: var(--info-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            transition: var(--transition);
+        }
+
+        .copy-btn:hover {
+            opacity: 0.9;
+        }
+
+        .payment-methods-list {
+            margin-top: 15px;
+        }
+
+        .payment-method-item {
+            background: var(--light-color);
+            padding: 10px;
+            border-radius: var(--border-radius);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* ডিলিট বাটন স্টাইল */
         .delete-btn {
             background-color: var(--error-color);
             color: white;
@@ -759,405 +891,55 @@
             transform: scale(1.1);
         }
 
-        /* Buttons */
-        button {
-            background: var(--primary-gradient);
-            color: white;
-            border: none;
-            border-radius: var(--border-radius);
-            padding: 16px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
+        .delete-btn:active {
+            transform: scale(0.95);
         }
 
-        button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: var(--transition);
+        /* মিনি অ্যালার্ট স্টাইল */
+        .mini-alert-popup {
+            font-size: 13px !important;
+            border-radius: 8px !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
         }
 
-        button:hover::before {
-            left: 100%;
+        .mini-alert-title {
+            font-size: 14px !important;
+            margin-bottom: 5px !important;
         }
 
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(67, 97, 238, 0.3);
+        .mini-alert-icon {
+            width: 20px !important;
+            height: 20px !important;
+            font-size: 14px !important;
         }
 
-        #submitButton {
-            width: 100%;
-            margin-top: 10px;
-            background: var(--success-gradient);
+        .swal2-timer-progress-bar {
+            height: 2px !important;
         }
 
-        #submitButton:disabled {
-            background: linear-gradient(135deg, #718096, #4a5568);
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        #submitButton:disabled::before {
-            display: none;
-        }
-
-        /* Withdraw History Section */
-        .history-section {
-            background: var(--card-bg);
-            border-radius: var(--border-radius-lg);
-            box-shadow: var(--box-shadow);
-            padding: 30px;
-            margin-top: 25px;
-            animation: slideInRight 0.8s ease-out 0.2s both;
-        }
-
-        .history-section h2 {
-            color: var(--primary-color);
-            text-align: center;
-            margin-bottom: 25px;
-            font-size: 24px;
-            font-weight: 700;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .search-container {
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .search-container input {
-            padding-left: 50px;
-            border-radius: var(--border-radius-lg);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-secondary);
-            font-size: 18px;
-        }
-
-        .history-list {
-            max-height: 350px;
-            overflow-y: auto;
-            border-radius: var(--border-radius);
-        }
-
-        .history-item {
-            background: var(--history-bg);
-            border-radius: var(--border-radius);
-            padding: 20px;
-            margin-bottom: 15px;
-            border-left: 4px solid var(--primary-color);
-            transition: var(--transition);
-            animation: fadeIn 0.6s ease-out;
-        }
-
-        .history-item:hover {
-            transform: translateX(5px) translateY(-2px);
-            box-shadow: var(--box-shadow);
-        }
-
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .history-timestamp {
-            font-size: 13px;
-            color: var(--text-secondary);
-            background: var(--light-color);
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-family: 'Courier New', monospace;
-            max-width: 120px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .history-amount {
-            font-weight: 700;
-            color: var(--primary-color);
-            font-size: 20px;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-        }
-
-        .history-details {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            font-size: 15px;
-        }
-
-        .history-date {
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .history-status {
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .status-pending {
-            background: linear-gradient(135deg, #fff3cd, #ffd700);
-            color: #856404;
-        }
-
-        .status-approved {
-            background: linear-gradient(135deg, #d4edda, #28a745);
-            color: #155724;
-        }
-
-        .status-rejected {
-            background: linear-gradient(135deg, #f8d7da, #dc3545);
-            color: #721c24;
-        }
-
-        .history-actions {
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .details-btn {
-            background: var(--info-color);
-            padding: 8px 16px;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-radius: var(--border-radius-sm);
-        }
-
-        /* Details Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal-content {
-            background: var(--card-bg);
-            border-radius: var(--border-radius-lg);
-            padding: 25px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: var(--box-shadow-lg);
-            animation: slideUp 0.4s ease-out;
-            position: relative;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 15px;
-        }
-
-        .modal-header h3 {
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 22px;
-            font-weight: 700;
-        }
-
-        .close-btn {
-            background: var(--error-color);
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .close-btn:hover {
-            transform: rotate(90deg) scale(1.1);
-        }
-
-        .modal-details {
-            margin-bottom: 20px;
-        }
-
-        .user-info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--border-color);
-        }
-
-        .user-info-item {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .user-info-label {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .user-info-value {
-            font-weight: 600;
-            word-break: break-word;
-            line-height: 1.5;
-        }
-
-        .detail-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .detail-label {
-            font-weight: 600;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .detail-value {
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .transaction-id-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--light-color);
-            padding: 15px;
-            border-radius: var(--border-radius);
-            margin-bottom: 20px;
-        }
-
-        .transaction-id {
-            font-family: 'Courier New', monospace;
-            font-size: 15px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            flex: 1;
-            margin-right: 15px;
-        }
-
-        .copy-btn {
-            background: var(--info-color);
-            color: white;
-            border: none;
-            border-radius: var(--border-radius-sm);
-            padding: 8px 15px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            transition: var(--transition);
-        }
-
-        .copy-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-
-        .payment-methods-list {
-            margin-top: 20px;
-        }
-
-        .payment-methods-list h4 {
-            margin-bottom: 15px;
-            color: var(--primary-color);
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .payment-method-item {
-            background: var(--light-color);
-            padding: 15px;
-            border-radius: var(--border-radius);
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: var(--transition);
-        }
-
-        .payment-method-item:hover {
-            background: var(--input-bg);
-            transform: translateX(5px);
-        }
-
-        .payment-method-item span {
-            font-weight: 500;
-        }
-
-        /* Watermark */
-        .watermark {
-            position: absolute;
-            opacity: 0.1;
-            font-size: 45px;
-            font-weight: 900;
-            color: var(--primary-color);
-            pointer-events: none;
-            z-index: 100;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            white-space: nowrap;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+        /* Desktop Styles */
+        @media (min-width: 768px) {
+            .form-container {
+                padding: 25px;
+            }
+            
+            .form-container h2 {
+                font-size: 26px;
+            }
+            
+            input, select {
+                padding: 12px 14px;
+                font-size: 15px;
+            }
+            
+            label {
+                font-size: 15px;
+            }
         }
 
         /* Scrollbar Styling */
         ::-webkit-scrollbar {
-            width: 10px;
+            width: 8px;
         }
 
         ::-webkit-scrollbar-track {
@@ -1173,80 +955,85 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--secondary-color);
         }
+    </style>
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .balance-container {
-                flex-direction: column;
-                gap: 20px;
-            }
+    <style>
+        /* নাম ওভারফ্লো সুরক্ষার জন্য অতিরিক্ত স্টাইল */
+        .user-info-value {
+            font-weight: 300;
+            word-break: break-word;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            line-height: 1.4;
+            max-height: 2.8em;
+        }
 
-            .balance-item::after {
-                display: none;
-            }
+        .history-timestamp {
+            font-size: 12px;
+            color: #888;
+            background: var(--light-color);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-family: monospace;
+            max-width: 50px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: inline-block;
+            vertical-align: middle;
+        }
 
-            .row {
-                flex-direction: column;
-                gap: 15px;
-            }
+        .transaction-id {
+            font-family: monospace;
+            font-size: 14px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+            margin-right: 10px;
+            display: inline-block;
+            max-width: 50%;
+        }
 
-            .field {
-                min-width: 100%;
-            }
-
+        /* মোবাইল ডিভাইসের জন্য রেসপন্সিভ স্টাইল */
+        @media (max-width: 480px) {
             .user-info-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
+                grid-template-columns: 1fr !important;
+                gap: 10px;
             }
-
-            .password-container {
-                padding: 25px;
+            
+            .history-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
             }
-
-            .password-title {
-                font-size: 24px;
-            }
-
-            .password-input-group input {
-                padding: 15px;
-                font-size: 16px;
-            }
-
-            .progress-btn {
-                padding: 18px;
-                font-size: 16px;
+            
+            .history-timestamp {
+                max-width: 100%;
             }
         }
 
-        @media (max-width: 480px) {
-            .balance-section {
-                padding: 20px;
-            }
+        /* মডাল কন্টেন্টের স্ক্রলেবল করা */
+        .modal-content {
+            overflow-y: auto;
+            max-height: 85vh;
+        }
 
-            .form-container {
-                padding: 20px;
-            }
-
-            .history-section {
-                padding: 20px;
-            }
-
-            .block-container {
-                padding: 25px;
-            }
-
-            .password-container {
-                padding: 20px;
-            }
-
-            .modal-content {
-                padding: 20px;
-            }
+        /* পেমেন্ট মেথড আইটেমের জন্য ওভারফ্লো প্রোটেকশন */
+        .payment-method-item span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 85%;
         }
     </style>
+    
 </head>
 
-<body data-theme="light">
+<body data-theme="dark">
     <!-- Block Overlay -->
     <div class="block-overlay" id="blockOverlay" style="display: none;">
         <div class="block-container">
@@ -1277,31 +1064,20 @@
                     <i class="fas fa-lock"></i>
                 </div>
                 <h3 class="password-title">Set Security Password</h3>
-                <p class="password-subtitle">Create a secure 6-digit numeric password to protect your withdrawals</p>
-                <p class="password-note">This password will be required for all withdrawal requests</p>
+                <p class="password-subtitle">Create a 6-digit numeric password for withdrawal security</p>
             </div>
             <form id="passwordSetupForm">
                 <div class="password-input-group">
-                    <label for="newPassword"><i class="fas fa-key"></i> New Password</label>
-                    <input type="password" id="newPassword" maxlength="6" pattern="[0-9]{6}" required 
-                           placeholder="Enter 6-digit password" inputmode="numeric">
+                    <label for="newPassword">New Password (6 digits)</label>
+                    <input type="password" id="newPassword" maxlength="6" pattern="[0-9]{6}" required placeholder="Enter 6-digit password">
                 </div>
                 <div class="password-input-group">
-                    <label for="confirmPassword"><i class="fas fa-check-double"></i> Confirm Password</label>
-                    <input type="password" id="confirmPassword" maxlength="6" pattern="[0-9]{6}" required 
-                           placeholder="Confirm 6-digit password" inputmode="numeric">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" maxlength="6" pattern="[0-9]{6}" required placeholder="Confirm 6-digit password">
                 </div>
-                <div class="progress-btn-container">
-                    <button type="submit" class="progress-btn">
-                        <div class="progress-btn-content">
-                            <span class="progress-btn-text">Save Password</span>
-                            <div class="progress-btn-loader"></div>
-                        </div>
-                        <div class="progress-bar-container">
-                            <div class="progress-bar"></div>
-                        </div>
-                    </button>
-                </div>
+                <button type="submit" class="password-btn">
+                    <i class="fas fa-save"></i> Save Password
+                </button>
             </form>
         </div>
     </div>
@@ -1314,29 +1090,19 @@
             </button>
             <div class="password-header">
                 <div class="password-icon">
-                    <i class="fas fa-shield-alt"></i>
+                    <i class="fas fa-lock"></i>
                 </div>
-                <h3 class="password-title">Verify Your Identity</h3>
-                <p class="password-subtitle">Please enter your 6-digit security password to confirm the withdrawal</p>
-                <p class="password-note">This ensures the security of your transaction</p>
+                <h3 class="password-title">Verify Password</h3>
+                <p class="password-subtitle">Enter your password to confirm withdrawal</p>
             </div>
             <form id="passwordVerifyForm">
                 <div class="password-input-group">
-                    <label for="verifyPassword"><i class="fas fa-lock"></i> Enter Password</label>
-                    <input type="password" id="verifyPassword" maxlength="6" pattern="[0-9]{6}" required 
-                           placeholder="Enter your 6-digit password" inputmode="numeric">
+                    <label for="verifyPassword">Password</label>
+                    <input type="password" id="verifyPassword" maxlength="6" pattern="[0-9]{6}" required placeholder="Enter your 6-digit password">
                 </div>
-                <div class="progress-btn-container">
-                    <button type="submit" class="progress-btn" id="verifyProgressBtn">
-                        <div class="progress-btn-content">
-                            <span class="progress-btn-text">Confirm Withdrawal</span>
-                            <div class="progress-btn-loader"></div>
-                        </div>
-                        <div class="progress-bar-container">
-                            <div class="progress-bar" id="verifyProgressBar"></div>
-                        </div>
-                    </button>
-                </div>
+                <button type="submit" class="password-btn">
+                    <i class="fas fa-check"></i> Confirm Withdrawal
+                </button>
             </form>
         </div>
     </div>
@@ -1350,7 +1116,7 @@
             <!-- Theme Toggle -->
             <div class="theme-toggle" id="themeToggle">
                 <div class="theme-toggle-btn">
-                    <i class="fas fa-sun" id="themeIcon"></i>
+                    <i class="fas fa-moon" id="themeIcon"></i>
                 </div>
             </div>
             
@@ -1368,9 +1134,6 @@
         
         <!-- Form Container Section -->
         <div class="form-container">
-            <h2><i class="fas fa-money-bill-wave"></i> Withdraw Request</h2>
-            
-            <!-- Withdraw Form -->
             <form id="withdrawForm">
                 <!-- Row for Chat ID and Username -->
                 <div class="row">
@@ -1412,7 +1175,7 @@
                         <button type="button" id="addPaymentBtn"><i class="fa-solid fa-plus"></i></button>
                     </div>
                     <div id="savedPayments" class="saved-payments">
-                        <!-- Saved payment methods will appear here -->
+                        <!-- সেভ করা পেমেন্ট মেথডগুলো এখানে শো হবে -->
                     </div>
                 </div>
                 
@@ -1433,6 +1196,7 @@
             
             <!-- History List -->
             <div class="history-list" id="historyList">
+                <!-- History items will be loaded here -->
                 <div class="no-history">No withdrawal history found</div>
             </div>
         </div>
@@ -1466,10 +1230,10 @@
         };
 
         // ==================== 📌 TELEGRAM BOT API CONFIGURATION ====================
-        // Replace with your actual bot token: "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
+        // আপনার বটের টোকেন এখানে replace করুন: "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
         const BOT_TOKEN = "7673657711:AAG9aHlpI8_Egvwi0fY9rxA4qyEfqOw16nU";
         
-        // Replace with your private channel/group ID (negative for groups/channels)
+        // আপনার প্রাইভেট চ্যানেল/গ্রুপ আইডি replace করুন (নেগেটিভ আইডি = গ্রুপ/চ্যানেল)
         const ADMIN_CHANNEL_ID = "-1003098627237";
         
         const BOT_API_URL = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
@@ -1495,9 +1259,6 @@
         };
         let withdrawHistory = [];
         let currentWithdrawAmount = 0;
-        let progressInterval;
-        let holdTime = 0;
-        const totalHoldTime = 2500; // 2.5 seconds
 
         // Payment Methods Configuration
         const paymentMethods = {
@@ -1519,8 +1280,8 @@
             const themeIcon = document.getElementById('themeIcon');
             const body = document.body;
             
-            // Use light theme as default
-            const savedTheme = localStorage.getItem('theme') || 'light';
+            // Use dark theme as default
+            const savedTheme = localStorage.getItem('theme') || 'dark';
             body.setAttribute('data-theme', savedTheme);
             
             // Update icon based on current theme
@@ -1674,8 +1435,6 @@
             const form = document.getElementById('passwordSetupForm');
             const newPassword = document.getElementById('newPassword');
             const confirmPassword = document.getElementById('confirmPassword');
-            const progressBtn = form.querySelector('.progress-btn');
-            const progressBar = form.querySelector('.progress-bar');
             
             // Close button event
             document.getElementById('closePasswordSetup').addEventListener('click', function() {
@@ -1695,32 +1454,9 @@
                     return;
                 }
                 
-                // Start progress animation
-                startProgressAnimation(progressBtn, progressBar, function() {
-                    // Save password to Firestore
-                    savePassword(newPassword.value);
-                });
+                // Save password to Firestore
+                savePassword(newPassword.value);
             });
-        }
-
-        // Start progress animation
-        function startProgressAnimation(progressBtn, progressBar, callback) {
-            progressBtn.classList.add('progress-btn-complete');
-            progressBtn.disabled = true;
-            
-            let width = 0;
-            const interval = 25; // Update every 25ms
-            const increment = (interval / totalHoldTime) * 100;
-            
-            const animation = setInterval(() => {
-                width += increment;
-                progressBar.style.width = width + '%';
-                
-                if (width >= 100) {
-                    clearInterval(animation);
-                    setTimeout(callback, 300);
-                }
-            }, interval);
         }
 
         // Save password to Firestore
@@ -1741,7 +1477,7 @@
                 
                 showAlert('success', 'Success', 'Password set successfully');
             })
-            .catch((error) => {
+            .catch((error) {
                 console.error('Error saving password:', error);
                 showAlert('error', 'Error', 'Failed to save password');
             });
@@ -1752,8 +1488,7 @@
             currentWithdrawAmount = amount;
             document.getElementById('passwordVerifyModal').style.display = 'flex';
             
-            const progressBtn = document.getElementById('verifyProgressBtn');
-            const progressBar = document.getElementById('verifyProgressBar');
+            // Setup verification form
             const form = document.getElementById('passwordVerifyForm');
             const passwordInput = document.getElementById('verifyPassword');
             
@@ -1762,69 +1497,42 @@
                 document.getElementById('passwordVerifyModal').style.display = 'none';
             });
             
-            // Reset progress
-            progressBar.style.width = '0%';
-            progressBtn.classList.remove('progress-btn-complete');
-            progressBtn.disabled = false;
-            
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
                 const enteredPassword = passwordInput.value;
                 
-                if (enteredPassword.length !== 6 || !/^\d+$/.test(enteredPassword)) {
-                    showAlert('error', 'Invalid Password', 'Please enter a valid 6-digit password');
-                    return;
-                }
-                
-                // Start progress animation
-                startProgressAnimation(progressBtn, progressBar, function() {
-                    verifyPassword(enteredPassword);
-                });
-            });
-        }
-
-        // Verify password
-        function verifyPassword(enteredPassword) {
-            if (enteredPassword === userData.password) {
-                // Correct password
-                userData.wrongPasswordAttempts = 0;
-                
-                // Update wrong attempts count
-                db.collection('users').doc(userData.chatId).update({
-                    wrongPasswordAttempts: 0
-                });
-                
-                // Hide verification modal
-                document.getElementById('passwordVerifyModal').style.display = 'none';
-                
-                // Proceed with withdrawal
-                createWithdrawRequest(currentWithdrawAmount);
-            } else {
-                // Wrong password
-                userData.wrongPasswordAttempts++;
-                
-                // Update wrong attempts count
-                db.collection('users').doc(userData.chatId).update({
-                    wrongPasswordAttempts: userData.wrongPasswordAttempts
-                });
-                
-                if (userData.wrongPasswordAttempts >= 3) {
-                    // Block user after 3 wrong attempts
-                    blockUser();
+                if (enteredPassword === userData.password) {
+                    // Correct password
                     document.getElementById('passwordVerifyModal').style.display = 'none';
-                } else {
-                    showAlert('error', 'Wrong Password', 
-                        `Incorrect password. ${3 - userData.wrongPasswordAttempts} attempts remaining`);
+                    userData.wrongPasswordAttempts = 0;
                     
-                    // Reset progress
-                    const progressBtn = document.getElementById('verifyProgressBtn');
-                    const progressBar = document.getElementById('verifyProgressBar');
-                    progressBar.style.width = '0%';
-                    progressBtn.classList.remove('progress-btn-complete');
-                    progressBtn.disabled = false;
+                    // Update wrong attempts count
+                    db.collection('users').doc(userData.chatId).update({
+                        wrongPasswordAttempts: 0
+                    });
+                    
+                    // Proceed with withdrawal
+                    createWithdrawRequest(currentWithdrawAmount);
+                } else {
+                    // Wrong password
+                    userData.wrongPasswordAttempts++;
+                    
+                    // Update wrong attempts count
+                    db.collection('users').doc(userData.chatId).update({
+                        wrongPasswordAttempts: userData.wrongPasswordAttempts
+                    });
+                    
+                    if (userData.wrongPasswordAttempts >= 3) {
+                        // Block user after 3 wrong attempts
+                        blockUser();
+                        document.getElementById('passwordVerifyModal').style.display = 'none';
+                    } else {
+                        showAlert('error', 'Wrong Password', 
+                            `Incorrect password. ${3 - userData.wrongPasswordAttempts} attempts remaining`);
+                    }
                 }
-            }
+            });
         }
 
         // Block user
@@ -2121,7 +1829,7 @@
                 return;
             }
 
-            savedPayments.forEach((payment, index) => {
+            savedPayments.forEach((payment, index) {
                 const paymentEl = document.createElement('div');
                 paymentEl.className = 'saved-item';
                 paymentEl.innerHTML = `
