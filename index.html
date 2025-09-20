@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Profile • Telegram Mini WebApp</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/js/all.min.js" integrity="sha512-6BTOlkauINO65nLhXhthZMtepgJSghyimIalb+crKRPhvhmsCdnIuGcVbR5/aQY2A+260iC1OPy1oCdB6pSSwQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <!-- =========================
+       THEME & BASE STYLES
+       ========================= -->
+  <style>
+    :root {
+      /* Light Theme */
+      --bg: #0b0f14;            /* Dark default */
+      --bg-soft: #11161d;
+      --card: #11161d;
+      --text: #e9eef7;
+      --text-dim: #a9b3c3;
+      --primary: #27AE60;       /* User's preferred brand color */
+      --primary-weak: rgba(39,174,96,0.16);
+      --border: #1e2734;
+      --ok: #2ecc71;
+      --warn: #f39c12;
+      --err: #e74c3c;
+      --shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    :root.light {
+      /* Light theme overrides */
+      --bg: #f5f7fb;
+      --bg-soft: #ffffff;
+      --card: #ffffff;
+      --text: #0b0f14;
+      --text-dim: #4d5b72;
+      --primary-weak: rgba(39,174,96,0.12);
+      --border: #e6ecf5;
+      --shadow: 0 10px 24px rgba(2,12,27,.06);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 15px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .app {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 10px 14px 100px; /* হেডার ফাঁকা জায়গা কমিয়ে আনা হয়েছে */
+    }
+
+    /* Section spacing */
+    .section {
+      margin-bottom: 24px;
+    }
+
+    /* Header */
+    .topbar {
+      position: sticky; top: 0; z-index: 50;
+      background: linear-gradient(180deg, var(--bg) 70%, transparent);
+      padding: 4px 0 8px; /* হেডার ফাঁকা জায়গা কমিয়ে আনা হয়েছে */
+      display: flex; align-items: center; gap: 10px; justify-content: space-between;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .logo {
+      width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center;
+      background: var(--primary-weak); color: var(--primary); font-weight: 800;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .title { font-size: 16px; font-weight: 700; letter-spacing: .2px; }
+
+    /* Buttons */
+    .btn {
+      --h: 42px; --px: 14px; --rad: 12px;
+      height: var(--h); padding: 0 var(--px);
+      border-radius: var(--rad);
+      border: 1px solid var(--border);
+      background: var(--bg-soft);
+      color: var(--text);
+      display: inline-flex; align-items: center; gap: 10px; justify-content: center;
+      font-weight: 600; cursor: pointer; user-select: none;
+      transition: transform .08s ease, background .2s ease, border-color .2s ease;
+      box-shadow: var(--shadow);
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+    .btn.primary { background: var(--primary); color: #fff; border-color: transparent; }
+    .btn.ghost   { background: transparent; }
+    .btn.small   { --h: 34px; --px: 10px; --rad: 10px; font-size: 13px; }
+    .btn.icon { --px: 8px; }
+
+    .theme-switch { display: inline-flex; align-items: center; gap: 8px; }
+
+    /* Layout */
+    .grid {
+      display: grid; gap: 16px;
+      grid-template-columns: 1.4fr 1fr;
+    }
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+    .card h3 { margin: 0 0 12px; font-size: 16px; }
+    .muted { color: var(--text-dim); font-size: 13px; }
+
+    /* Profile */
+    .profile {
+      display: grid; grid-template-columns: 92px 1fr; gap: 16px; align-items: center;
+    }
+    .avatar {
+      width: 92px; height: 92px; border-radius: 22px; overflow: hidden; border: 1px solid var(--border);
+      background: #0a0a0a; display: grid; place-items: center; font-weight: 800; color: #7b8aa2;
+    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .kv { 
+      display: grid; 
+      grid-template-columns: 1fr auto; 
+      gap: 8px; 
+      align-items: center; 
+      padding: 8px 0; 
+    }
+    .kv .k { color: var(--text-dim); font-size: 13px; }
+    .kbd { 
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; 
+      letter-spacing: .2px; 
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
+    }
+
+    /* Stat cards */
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    @media (max-width: 680px){ .stats { grid-template-columns: repeat(2, 1fr);} }
+    .stat { padding: 14px; border-radius: 16px; border: 1px solid var(--border); background: linear-gradient(180deg, var(--bg-soft), transparent); }
+    .stat .label { color: var(--text-dim); font-size: 12px; }
+    .stat .value { font-weight: 800; font-size: 20px; margin-top: 6px; }
+
+    /* Table */
+    .table { width: 100%; border-collapse: collapse; }
+    .table th, .table td { text-align: left; padding: 10px 8px; border-bottom: 1px dashed var(--border); }
+    .table th { color: var(--text-dim); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .6px; }
+    .badge { display: inline-block; padding: 4px 8px; border-radius: 999px; border: 1px solid var(--border); font-size: 12px; }
+    .badge.success { background: rgba(46, 204, 113, 0.15); color: #2ecc71; border-color: rgba(46, 204, 113, 0.3); }
+    .badge.pending { background: rgba(243, 156, 18, 0.15); color: #f39c12; border-color: rgba(243, 156, 18, 0.3); }
+    .badge.rejected { background: rgba(231, 76, 60, 0.15); color: #e74c3c; border-color: rgba(231, 76, 60, 0.3); }
+
+    /* Toast */
+    .toast {
+      position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%) translateY(20px);
+      background: var(--bg-soft); color: var(--text);
+      border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; box-shadow: var(--shadow);
+      opacity: 0; pointer-events: none; transition: .25s ease;
+      z-index: 100;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* Demo banner */
+    .demo {
+      background: var(--primary-weak);
+      color: var(--primary);
+      padding: 10px 14px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      border: 1px solid var(--border);
+    }
+
+    /* টেক্সট ওভারফ্লো ফিক্স - নাম, ইউজারনেম ইত্যাদির জন্য */
+    .text-truncate {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 180px;
+    }
+    
+    /* Iframe Styling */
+    .iframe-container {
+      width: 100%;
+      height: 400px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      margin-top: 12px;
+    }
+    
+    .transaction-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: var(--bg-soft);
+    }
+    
+    .iframe-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      height: 100%;
+      color: var(--text-dim);
+      gap: 12px;
+    }
+    
+    .iframe-placeholder i {
+      font-size: 32px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="theme-switch">
+        <button id="themeToggle" class="btn small ghost" title="থিম পরিবর্তন করুন"> <i class="fa-solid fa-moon"></i> Theme</button>
+        <button id="languageToggle" class="btn small ghost" title="Change language"> <i class="fa-solid fa-language"></i> <span id="languageText">বাংলা</span></button>
+      </div>
+    </div>
+    
+    <!-- Demo note (hides when inside Telegram) -->
+    <div id="demoBanner" class="demo" style="display:none;">
+      Demo Mode সক্রিয়। Telegram পরিবেশ না থাকলে টেস্ট করার জন্য mock user ব্যবহার হচ্ছে।
+    </div>
+
+    <!-- Profile Card -->
+    <div class="section">
+      <div class="card" id="profileCard">
+        <div class="profile">
+          <div class="avatar" id="avatar"><span>👤</span></div>
+          <div>
+            <div class="kv">
+              <div class="k" data-i18n="name">Name:</div>
+              <div class="copy">
+                <span id="fullName" class="kbd text-truncate skeleton" style="min-width:160px; height:16px; border-radius:6px;"></span>
+              </div>
+            </div>
+            <div class="kv">
+              <div class="k" data-i18n="username">TgUN:</div>
+              <div class="copy">
+                <span id="username" class="kbd text-truncate skeleton" style="min-width:140px; height:16px; border-radius:6px;"></span>
+                <button class="btn icon small" data-copy="username" title="Copy"> <i class="fa-solid fa-copy"></i> </button>
+              </div>
+            </div>
+            <div class="kv">
+              <div class="k" data-i18n="userid">UID:</div>
+              <div class="copy">
+                <span id="chatId" class="kbd text-truncate skeleton" style="min-width:140px; height:16px; border-radius:6px;"></span>
+                <button class="btn icon small" data-copy="chatId" title="Copy"> <i class="fa-solid fa-copy"> </i></button>
+              </div>
+            </div>
+            <div class="kv">
+              <div class="k" data-i18n="joindate">Date:</div>
+              <div class="copy">
+                <span id="joinDate" class="kbd text-truncate skeleton" style="min-width:120px; height:16px; border-radius:6px;"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Card -->
+    <div class="section">
+      <div class="card">
+        <h3 data-i18n="accountOverview">Account Overview</h3>
+        <div class="stats">
+          <div class="stat">
+            <div class="label" data-i18n="balance">Balance</div>
+            <div id="balance" class="value">0.00</div>
+          </div>
+          <div class="stat">
+            <div class="label" data-i18n="todayEarning">Today Earning</div>
+            <div id="todayEarning" class="value">0.00</div>
+          </div>
+          <div class="stat">
+            <div class="label" data-i18n="totalWithdraw">Total Withdraw</div>
+            <div id="totalWithdraw" class="value">0.00</div>
+          </div>
+          <div class="stat">
+            <div class="label" data-i18n="totalEarning">Total Earning</div>
+            <div id="totalEarning" class="value">0.00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- History Card -->
+    <div class="section">
+      <div class="card">
+        <h3 data-i18n="transactionHistory">ট্রানজেকশন হিস্টোরি</h3>
+        <div class="iframe-container">
+          <iframe class="transaction-iframe" id="transactionFrame" src="about:blank"></iframe>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  
+  <div id="toast" class="toast">কপি করা হয়েছে!</div>
+  
+  <!-- =========================
+       TELEGRAM + FIREBASE LOGIC
+       ========================= -->
+  <script>
+    // ------------------------------
+    // Language and Theme persistence
+    // ------------------------------
+    const root = document.documentElement;
+    const THEME_KEY = 'oc_theme';
+    const LANG_KEY = 'oc_language';
+    
+    // Language translations
+    const translations = {
+      'bn': {
+        'name': 'নাম:',
+        'username': 'ইউএন:',
+        'userid': 'আইডি:',
+        'joindate': 'জয়েন তারিখ:',
+        'accountOverview': 'অ্যাকাউন্ট সারসংক্ষেপ',
+        'balance': 'ব্যালেন্স',
+        'todayEarning': 'আজকের আয়',
+        'totalWithdraw': 'মোট উত্তোলন',
+        'totalEarning': 'মোট আয়',
+        'transactionHistory': 'ট্রানজেকশন হিস্টোরি',
+        'date': 'তারিখ',
+        'method': 'পদ্ধতি',
+        'amount': 'পরিমাণ',
+        'status': 'স্ট্যাটাস',
+        'loading': 'লোড হচ্ছে…',
+        'noHistory': 'কোনো হিস্টরি পাওয়া যায়নি',
+        'copySuccess': 'কপি করা হয়েছে',
+        'copyFailed': 'কপি করতে ব্যর্থ হয়েছে',
+        'themeChange': 'থিম পরিবর্তন করুন',
+        'languageChange': 'ভাষা পরিবর্তন করুন',
+        'success': 'সফল',
+        'pending': 'মুলতুবি',
+        'rejected': 'বাতিল',
+        'dataLoadError': 'ডেটা লোড করতে সমস্যা হয়েছে'
+      },
+      'en': {
+        'name': 'Name:',
+        'username': 'Username:',
+        'userid': 'User ID:',
+        'joindate': 'Bot Join Date:',
+        'accountOverview': 'Account Overview',
+        'balance': 'Balance',
+        'todayEarning': 'Today Earning',
+        'totalWithdraw': 'Total Withdraw',
+        'totalEarning': 'Total Earning',
+        'transactionHistory': 'Transaction History',
+        'date': 'Date',
+        'method': 'Method',
+        'amount': 'Amount',
+        'status': 'Status',
+        'loading': 'Loading…',
+        'noHistory': 'No history found',
+        'copySuccess': 'Copied successfully',
+        'copyFailed': 'Failed to copy',
+        'themeChange': 'Change theme',
+        'languageChange': 'Change language',
+        'success': 'Success',
+        'pending': 'Pending',
+        'rejected': 'Rejected',
+        'dataLoadError': 'Failed to load data'
+      }
+    };
+    
+    // Apply language
+    function applyLanguage(lang) {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+      document.getElementById('languageText').textContent = lang === 'bn' ? 'English' : 'বাংলা';
+      document.getElementById('languageToggle').setAttribute('title', lang === 'bn' ? 'Change to English' : 'বাংলায় পরিবর্তন করুন');
+      localStorage.setItem(LANG_KEY, lang);
+      
+      // Firebase-এ ভাষা প্রেফারেন্স আপডেট করুন (যদি ইউজার লগ ইন করা থাকে)
+      if (window.currentUserRef) {
+        updateUserPreference({ language: lang });
+      }
+    }
+    
+    // Apply theme
+    function applyTheme(t){
+      const themeIcon = document.querySelector('#themeToggle i');
+      if (t === 'light') {
+        root.classList.add('light');
+        themeIcon.className = 'fa-solid fa-sun';
+      } else {
+        root.classList.remove('light');
+        themeIcon.className = 'fa-solid fa-moon';
+      }
+      localStorage.setItem(THEME_KEY, t);
+      try { if (window.Telegram?.WebApp?.setHeaderColor) window.Telegram.WebApp.setHeaderColor(t === 'light' ? '#ffffff' : '#0b0f14'); } catch {}
+      
+      // Firebase-এ থিম প্রেফারেন্স আপডেট করুন (যদি ইউজার লগ ইন করা থাকে)
+      if (window.currentUserRef) {
+        updateUserPreference({ theme: t });
+      }
+    }
+    
+    // Initialize theme and language
+    const savedTheme = localStorage.getItem(THEME_KEY) || 'dark';
+    const savedLang = localStorage.getItem(LANG_KEY) || 'bn';
+    applyTheme(savedTheme);
+    applyLanguage(savedLang);
+    
+    // Theme toggle
+    document.getElementById('themeToggle').addEventListener('click', ()=>{
+      applyTheme(root.classList.contains('light') ? 'dark' : 'light');
+    });
+    
+    // Language toggle
+    document.getElementById('languageToggle').addEventListener('click', ()=>{
+      const currentLang = localStorage.getItem(LANG_KEY) || 'bn';
+      applyLanguage(currentLang === 'bn' ? 'en' : 'bn');
+    });
+
+    // ------------------------------
+    // Helpers
+    // ------------------------------
+    const $ = (id) => document.getElementById(id);
+    const toast = (msg='কপি করা হয়েছে!') => { 
+      const el=$('toast'); 
+      el.textContent=msg; 
+      el.classList.add('show'); 
+      setTimeout(()=>el.classList.remove('show'), 1200); 
+    };
+    const fmtMoney = (n) => (typeof n === 'number' ? n : Number(n||0)).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+    // Copy buttons
+    document.querySelectorAll('[data-copy]').forEach(btn=>{
+      btn.addEventListener('click', async ()=>{
+        const id = btn.getAttribute('data-copy');
+        const text = $(id)?.dataset?.value || $(id)?.textContent?.trim();
+        const currentLang = localStorage.getItem(LANG_KEY) || 'bn';
+        try { 
+          await navigator.clipboard.writeText(text); 
+          toast(translations[currentLang]['copySuccess'] + ': ' + text); 
+        } catch { 
+          toast(translations[currentLang]['copyFailed']); 
+        }
+      });
+    });
+
+    // ------------------------------
+    // Telegram user (real or mock for local testing)
+    // ------------------------------
+    function getTelegramUser(){
+      // Telegram WebApp initialization with safety check
+      if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
+        try {
+          Telegram.WebApp.ready();
+          Telegram.WebApp.expand();
+          if (Telegram.WebApp.initDataUnsafe && Telegram.WebApp.initDataUnsafe.user) {
+            return { source: 'telegram', user: Telegram.WebApp.initDataUnsafe.user };
+          }
+        } catch (error) {
+          console.log('Telegram WebApp initialization error:', error);
+        }
+      }
+      
+      // Mock (for local dev)
+      const mock = {
+        id: 999999999,
+        first_name: 'Your',
+        last_name: 'Name',
+        username: '' ,
+        language_code: 'bn',
+        is_premium: true,
+        photo_url: ''
+      };
+      return { source: 'mock', user: mock };
+    }
+
+    // Render profile skeleton to real content
+    function renderProfile(u, joinedAt){
+      if (!u) return;
+      
+      const fullName = [u.first_name, u.last_name].filter(Boolean).join(' ') || '-';
+      const uname = u.username ? '@'+u.username : '-';
+      const id = String(u.id);
+
+      const pic = u.photo_url;
+      const avatar = $('avatar');
+      if (pic) {
+        avatar.innerHTML = `<img alt="avatar" src="${pic}">`;
+      } else {
+        avatar.innerHTML = '<span>👤</span>';
+      }
+
+      const setText = (el, text) => { 
+        el.classList.remove('skeleton'); 
+        el.textContent = text; 
+        el.dataset.value = text; 
+      };
+      
+      setText($('fullName'), fullName);
+      setText($('username'), uname);
+      setText($('chatId'), id);
+      setText($('joinDate'), joinedAt ? new Date(joinedAt).toLocaleDateString() : new Date().toLocaleDateString());
+    }
+
+    function renderStats(stats){
+      const setV = (id, v) => { 
+        const el = $(id); 
+        el.textContent = fmtMoney(v); 
+      };
+      setV('balance', stats.balance || 0);
+      setV('todayEarning', stats.todayEarning || 0);
+      setV('totalWithdraw', stats.totalWithdraw || 0);
+      setV('totalEarning', stats.totalEarning || 0);
+    }
+
+    // Load transaction history in iframe
+    function loadTransactionHistory(userId) {
+      const iframe = document.getElementById('transactionFrame');
+      // Replace with your actual transaction history page URL
+      // Example: iframe.src = `https://yourdomain.com/transaction-history?user=${userId}`;
+      
+      // For demo purposes, we'll show a placeholder
+      iframe.onload = function() {
+        // If the iframe fails to load, show a placeholder
+        try {
+          if (iframe.contentWindow.document.body.innerHTML === '') {
+            showIframePlaceholder();
+          }
+        } catch (e) {
+          showIframePlaceholder();
+        }
+      };
+      
+      // Set a timeout to show placeholder if iframe doesn't load
+      setTimeout(() => {
+        try {
+          if (iframe.contentWindow.document.body.innerHTML === '') {
+            showIframePlaceholder();
+          }
+        } catch (e) {
+          showIframePlaceholder();
+        }
+      }, 3000);
+    }
+    
+    function showIframePlaceholder() {
+      const iframe = document.getElementById('transactionFrame');
+      const placeholderHTML = `
+        <div class="iframe-placeholder">
+          <i class="fa-solid fa-receipt"></i>
+          <div>ট্রানজেকশন ডেটা লোড হচ্ছে...</div>
+        </div>
+      `;
+      
+      try {
+        iframe.contentDocument.body.innerHTML = placeholderHTML;
+        iframe.contentDocument.body.style.backgroundColor = 'var(--bg-soft)';
+        iframe.contentDocument.body.style.color = 'var(--text)';
+        iframe.contentDocument.body.style.display = 'flex';
+        iframe.contentDocument.body.style.alignItems = 'center';
+        iframe.contentDocument.body.style.justifyContent = 'center';
+        iframe.contentDocument.body.style.fontFamily = 'system-ui, sans-serif';
+      } catch (e) {
+        console.log('Could not set iframe placeholder:', e);
+      }
+    }
+
+    // ------------------------------
+    // Fallback function for when Telegram data fails to load
+    // ------------------------------
+    async function loadUserWithFallback(userId) {
+      try {
+        // Try to get user data from Firebase first
+        const uRef = doc(db, 'users', userId);
+        const snap = await getDoc(uRef);
+        
+        if (snap.exists()) {
+          const data = snap.data();
+          renderProfile({
+            id: data.id || userId,
+            first_name: data.first_name || 'User',
+            last_name: data.last_name || '',
+            username: data.username || '',
+            photo_url: data.photo_url || ''
+          }, data.joinDate?.toDate?.() ? data.joinDate.toDate().getTime() : Date.now());
+          
+          renderStats({
+            balance: data.balance || 0,
+            todayEarning: data.todayEarning || 0,
+            totalWithdraw: data.totalWithdraw || 0,
+            totalEarning: data.totalEarning || 0,
+          });
+          
+          return true;
+        }
+      } catch (error) {
+        console.error('Fallback user loading error:', error);
+      }
+      
+      return false;
+    }
+  </script>
+  
+  <!-- =========================
+       FIREBASE (v9 Modular via CDN)
+       Fill your config below
+       ========================= -->
+  <script type="module">
+    // ===== IMPORTANT: Add your Firebase project config here =====
+    // 🔧 Replace the placeholders with your real values from Firebase Console
+    const firebaseConfig = {
+      apiKey: "AIzaSyCs6ePkTxvMjcERh6yAdvjPqxIu6X7jhRM",
+      authDomain: "fbm-market-bot.firebaseapp.com",
+      projectId: "fbm-market-bot",
+      storageBucket: "fbm-market-bot.firebasestorage.app",
+      messagingSenderId: "711610016805",
+      appId: "1:711610016805:web:c5a019c9af1485ac984bcc",
+      databaseURL: "https://fbm-market-bot-default-rtdb.asia-southeast1.firebasedatabase.app"
+    };
+
+    // ===== Imports =====
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
+    import { getFirestore, doc, getDoc, setDoc, serverTimestamp, collection, query, orderBy, limit, getDocs, onSnapshot, updateDoc } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
+
+    // ===== App Init =====
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // ===== Telegram user (real or mock) =====
+    const { source, user } = getTelegramUser();
+    const demoBanner = document.getElementById('demoBanner');
+    if (source === 'mock') demoBanner.style.display = 'block';
+
+    // ===== Step 1: First render Telegram user data =====
+    renderProfile(user, Date.now());
+
+    // ===== Firebase-এ ইউজার প্রেফারেন্স আপডেট করার ফাংশন =====
+    async function updateUserPreference(prefs) {
+      try {
+        if (!window.currentUserRef) return;
+        
+        await updateDoc(window.currentUserRef, {
+          ...prefs,
+          updatedAt: serverTimestamp()
+        });
+      } catch (error) {
+        console.error('প্রেফারেন্স আপডেট করতে সমস্যা:', error);
+      }
+    }
+
+    // ===== Step 2: Then load user data from Firebase using chat ID =====
+    async function loadUserDataFromFirebase(){
+      if (!user || !user.id) {
+        console.error('User data not available');
+        const currentLang = localStorage.getItem(LANG_KEY) || 'bn';
+        toast(translations[currentLang]['dataLoadError'] || 'ইউজার ডেটা লোড করতে সমস্যা হয়েছে');
+        return;
+      }
+      
+      const uid = String(user.id);
+      const uRef = doc(db, 'users', uid);
+      window.currentUserRef = uRef; // গ্লোবাল রেফারেন্স সংরক্ষণ
+      
+      const snap = await getDoc(uRef);
+
+      let joinedAt = Date.now();
+      let initialJoinDate = null;
+
+      if (!snap.exists()) {
+        // Create new user with defaults
+        const payload = {
+          id: uid,
+          first_name: user.first_name || '',
+          last_name: user.last_name || '',
+          username: user.username || '',
+          photo_url: user.photo_url || '',
+          is_premium: !!user.is_premium,
+          language_code: user.language_code || 'en',
+          balance: 0,
+          todayEarning: 0,
+          totalWithdraw: 0,
+          totalEarning: 0,
+          joinDate: serverTimestamp(),
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+          // প্রেফারেন্স সংরক্ষণ
+          preferences: {
+            theme: localStorage.getItem(THEME_KEY) || 'dark',
+            language: localStorage.getItem(LANG_KEY) || 'bn'
+          }
+        };
+        await setDoc(uRef, payload);
+        
+        // Render with new user data
+        renderProfile(user, joinedAt);
+        renderStats({
+          balance: 0,
+          todayEarning: 0,
+          totalWithdraw: 0,
+          totalEarning: 0,
+        });
+        
+        initialJoinDate = joinedAt;
+      } else {
+        const data = snap.data();
+        initialJoinDate = (data.joinDate?.toDate?.() ? data.joinDate.toDate().getTime() : (data.joinDate || Date.now()));
+        joinedAt = initialJoinDate; // প্রথম যোগদানের তারিখ সংরক্ষণ
+        
+        // Firebase থেকে প্রেফারেন্স লোড করুন
+        if (data.preferences) {
+          if (data.preferences.theme) {
+            applyTheme(data.preferences.theme);
+          }
+          if (data.preferences.language) {
+            applyLanguage(data.preferences.language);
+          }
+        }
+        
+        // Check if Telegram data is incomplete and use Firebase data as fallback
+        let userDataToRender = user;
+        if ((!user.first_name && !user.last_name && !user.username) || user.id === 999999999) {
+          userDataToRender = {
+            id: data.id || user.id,
+            first_name: data.first_name || user.first_name,
+            last_name: data.last_name || user.last_name,
+            username: data.username || user.username,
+            photo_url: data.photo_url || user.photo_url
+          };
+        }
+        
+        // টেলিগ্রামে প্রোফাইল আপডেট হলে Firebase-এ সিঙ্ক করুন
+        const needsUpdate = 
+          (data.first_name !== user.first_name) ||
+          (data.last_name !== user.last_name) ||
+          (data.username !== user.username) ||
+          (data.photo_url !== user.photo_url);
+        
+        if (needsUpdate) {
+          await updateDoc(uRef, {
+            first_name: user.first_name || '',
+            last_name: user.last_name || '',
+            username: user.username || '',
+            photo_url: user.photo_url || '',
+            updatedAt: serverTimestamp()
+          });
+        }
+        
+        // Update profile with data from Firebase
+        renderProfile(userDataToRender, initialJoinDate); // প্রথম যোগদানের তারিখ ব্যবহার
+        
+        // Render stats from Firebase
+        renderStats({
+          balance: data.balance || 0,
+          todayEarning: data.todayEarning || 0,
+          totalWithdraw: data.totalWithdraw || 0,
+          totalEarning: data.totalEarning || 0,
+        });
+
+        // Load transaction history in iframe
+        loadTransactionHistory(uid);
+
+        // Set up real-time listeners for updates
+        onSnapshot(uRef, (doc) => {
+          if (doc.exists()) {
+            const data = doc.data();
+            renderStats({
+              balance: data.balance || 0,
+              todayEarning: data.todayEarning || 0,
+              totalWithdraw: data.totalWithdraw || 0,
+              totalEarning: data.totalEarning || 0,
+            });
+            
+            // প্রোফাইল তথ্য আপডেট হলে UI-তে প্রতিফলিত করুন
+            renderProfile({
+              id: data.id || user.id,
+              first_name: data.first_name || user.first_name,
+              last_name: data.last_name || user.last_name,
+              username: data.username || user.username,
+              photo_url: data.photo_url || user.photo_url
+            }, initialJoinDate); // প্রথম যোগদানের তারিখ অপরিবর্তিত রাখুন
+          }
+        });
+      }
+    }
+
+    // Load data from Firebase
+    loadUserDataFromFirebase().catch(async err=>{
+      console.error('Firebase error:', err);
+      const currentLang = localStorage.getItem(LANG_KEY) || 'bn';
+      toast(translations[currentLang]['dataLoadError'] || 'ডেটা লোড করতে সমস্যা হয়েছে');
+      
+      // Try to load user data with fallback method
+      if (user && user.id) {
+        const success = await loadUserWithFallback(String(user.id));
+        if (!success) {
+          // Hide skeleton loaders on error
+          document.querySelectorAll('.skeleton').forEach(el => {
+            el.classList.remove('skeleton');
+            el.textContent = '-';
+          });
+        }
+      } else {
+        // Hide skeleton loaders on error
+        document.querySelectorAll('.skeleton').forEach(el => {
+          el.classList.remove('skeleton');
+          el.textContent = '-';
+        });
+      }
+    });
+  </script>
+  
+  <!-- Telegram WebApp JS (optional, loaded by Telegram client automatically). Safe to include for local preview. -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</body>
+  </html>
